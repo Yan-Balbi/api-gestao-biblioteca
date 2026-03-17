@@ -1,19 +1,26 @@
 # api-gestao-biblioteca
 API REST para gestão de biblioteca, desenvolvida para gerenciar o cadastro de livros, autores, editoras, usuários e o controle de empréstimos. O sistema permite que funcionários registrem empréstimos e devoluções, enquanto clientes podem consultar o catálogo e agendar retiradas de livros.
 
-##1. LEVANTAMENTO DE REQUISITOS
+## 1. LEVANTAMENTO DE REQUISITOS
 
-###1.2 Levantamento de Requisitos funcionais
+### 1.2 Levantamento de Requisitos funcionais
+- O sistema deve permitir que um cliente crie uma conta.
 - O sistema deve permitir que o usuário realize login com e-mail e senha.
-- O sistema deve registrar empréstimos de livros para clientes.
-- O sistema deve permitir que o cliente vizualize os livros disponíveis.
-- O sistema deve permitir que o cliente vizualize os livros disponíveis.
-- O sistema deve permitir que o cliente encontre livros por meio de data de publicação, autor, editora, ou ISBN.
+- O sistema deve permitir que o bibliotecário/admin registre empréstimos de livros para clientes.
+- O sistema deve permitir que o cliente/bibliotecário/admin vizualize os livros disponíveis.
+- O sistema deve permitir que o cliente/bibliotecário/admin vizualize os livros disponíveis.
+- O sistema deve permitir que o cliente/bibliotecário/admin encontre livros por meio de data de publicação, autor, editora, ou ISBN.
+- O sistema deve permitir que o bibliotecário/administrador cadastre/atualize/inative um livro.
+- Nenhum dado é efetivamente excluido do sistema SGBD, isso vale para qualquer tabela, um item de uma tabela só é marcado como inativo, mas nunca é de fato removido (todas as tabelas precisam ter um campo chamado ativo então).
+- O sistema deve permitir que o administrador cadastre/atualize/inative um bibliotecário.
+- O sistema
 //continuar
-O sistema deve registrar empréstimos de livros para clientes.
-###1.3 Levantamento de Requisitos não funcionais
 
-###1.2 LEVANTAMENTO DE REGRAS DE NEGÓCIO
+### 1.3 Levantamento de Requisitos não funcionais
+- O sistema deve fornecer segurança ao garantir autenticação em funções que envolvem exposição ou alteração de dados sensíveis.
+- O sistema deve armazenar as senhas cadastradas pelos usuários usando um método de criptografia de senhas
+  
+### 1.2 LEVANTAMENTO DE REGRAS DE NEGÓCIO
 | ID    | Regra de Negócio                | Descrição                                                                                                                                              | Condições                                                                                                                   |
 | ----- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
 | RN01   | Empréstimo de Livro             | Um bibliotecário pode efetuar um empréstimo para um cliente.                                                                                           | Um livro possui 1 ou mais exemplares, sendo que o exemplar deve ser alugado, e não o livro.                                                                  |
