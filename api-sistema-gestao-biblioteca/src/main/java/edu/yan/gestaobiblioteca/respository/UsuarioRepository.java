@@ -12,6 +12,8 @@ import edu.yan.gestaobiblioteca.model.UsuarioModel;
 public interface UsuarioRepository extends CrudRepository<UsuarioModel, Long>{
 	//obs: do jeito que tá vai listar todos os usuarios: admins, employees e clientes
 	Optional<UsuarioModel> findByCpf(String cpf);
+	
+	Optional<UsuarioModel> findByEmail(String email);
 
 	/*================== Buscar por CPF ==================*/
 	//Query personalizada para filtrar por role admin

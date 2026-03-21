@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import edu.yan.gestaobiblioteca.dto.UsuarioUpdateDTO;
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
 import edu.yan.gestaobiblioteca.handler.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.UsuarioModel;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
@@ -13,11 +13,18 @@ import edu.yan.gestaobiblioteca.service.interfaces.IUsuarioService;
 import jakarta.transaction.Transactional;
 
 @Service
-public class UsuarioImplementationService implements IUsuarioService{
-
+public class UsuarioServiceImplementation implements IUsuarioService{
+/* 	alterato
 	@Autowired
 	UsuarioRepository usuarioRepository;
-	
+*/
+
+    private final UsuarioRepository usuarioRepository;
+
+    public UsuarioServiceImplementation(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+    
 	public UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
 		if(!usuarioRepository.findAdminByCpf(usuarioModel.getCpf()).isEmpty()) {
 			throw new IllegalArgumentException("O cpf informado já está cadastrado");

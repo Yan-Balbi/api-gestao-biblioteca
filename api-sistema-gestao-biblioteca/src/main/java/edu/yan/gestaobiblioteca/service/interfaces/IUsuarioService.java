@@ -2,7 +2,7 @@ package edu.yan.gestaobiblioteca.service.interfaces;
 
 import java.util.Optional;
 
-import edu.yan.gestaobiblioteca.dto.UsuarioUpdateDTO;
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
 import edu.yan.gestaobiblioteca.model.UsuarioModel;
 
 public interface IUsuarioService {

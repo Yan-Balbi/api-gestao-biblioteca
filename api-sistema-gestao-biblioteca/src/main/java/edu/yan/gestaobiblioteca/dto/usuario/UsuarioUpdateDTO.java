@@ -1,4 +1,4 @@
-package edu.yan.gestaobiblioteca.dto;
+package edu.yan.gestaobiblioteca.dto.usuario;
 
 public class UsuarioUpdateDTO {
 	private String cpf;

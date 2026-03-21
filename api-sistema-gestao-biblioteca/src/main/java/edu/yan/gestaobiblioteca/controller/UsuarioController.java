@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.yan.gestaobiblioteca.model.UsuarioModel;
-import edu.yan.gestaobiblioteca.service.implementations.UsuarioImplementationService;
+import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementation;
 
 @RestController
 @RequestMapping("usuario")
 public class UsuarioController {
 	@Autowired
-	private UsuarioImplementationService usuarioImplementationService;
+	private UsuarioServiceImplementation usuarioImplementationService;
 	
 	@PostMapping("/cliente")
 	public ResponseEntity<UsuarioModel> inserirCliente(@RequestBody UsuarioModel usuarioRequest){
