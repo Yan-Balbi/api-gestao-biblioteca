@@ -1,12 +1,16 @@
 package edu.yan.gestaobiblioteca.service.implementations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
-import edu.yan.gestaobiblioteca.handler.UsuarioNaoEncontrado;
+import edu.yan.gestaobiblioteca.exception.CpfInvalidoException;
+import edu.yan.gestaobiblioteca.exception.RegraDeNegocioException;
+import edu.yan.gestaobiblioteca.exception.UsuarioJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.UsuarioModel;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.interfaces.IUsuarioService;
@@ -24,10 +28,45 @@ public class UsuarioServiceImplementation implements IUsuarioService{
     public UsuarioServiceImplementation(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+	
+
+    private static boolean cpfValido(String cpf) {
+		//remover todos os '.' e todos os '-' do trem
+		cpf = cpf.replace(".", "");
+		cpf = cpf.replace("-", "");
+		
+		//pegar os 9 primeiros numeros
+		//	123456789
+		List<Integer> listaNumerosCpf = new  ArrayList<Integer>();
+		for(char caracter : cpf.substring(0,9).toCharArray()) {
+			listaNumerosCpf.add(Character.getNumericValue(caracter));
+		}
+		
+		//cada um dos 9 numeros deverão ser multiplicados por pesos de 10 até 2
+		//	a*10  b*9  c*8  d*7  e*6  f*5  g*4  h*3  i*2
+		//agora tem que somar todos esses numeros. (a=1, b=2, ...,i=9)
+		//  10 + 18 + 24 + 28 + 30 + 30 + 28 + 16 + 18 = 210
+		int soma = listaNumerosCpf.stream().map(i -> listaNumerosCpf.get(i)*(10-i)).reduce(0, (a,b) -> a+b);
+		//Agora aplique a formula: (210 * 10) / 11 e obtenha o resto
+		int resto = soma%11;
+		
+		//Cálculo do Primeiro Dígito Verificador (j)
+		//	se o resto for menor que 2
+		if(resto < 2) {
+			if(!(Character.getNumericValue(cpf.charAt(9)) == 0)) return false;
+		} else {
+			if(!(Character.getNumericValue(cpf.charAt(9)) == 11-resto)) return false;
+		}
+		
+		return true;
+    }
     
 	public UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
-		if(!usuarioRepository.findAdminByCpf(usuarioModel.getCpf()).isEmpty()) {
-			throw new IllegalArgumentException("O cpf informado já está cadastrado");
+		if(!usuarioRepository.findByCpf(usuarioModel.getCpf()).isEmpty()) {
+			throw new UsuarioJaCadastradoException("O CPF '"+usuarioModel.getCpf()+"'informado já está cadastrado");
+		}
+		if(!cpfValido(usuarioModel.getCpf())) {
+			throw new CpfInvalidoException("O CPF '"+usuarioModel.getCpf()+"' informado não é válido");
 		}
 		UsuarioModel usuarioInserido = usuarioRepository.save(usuarioModel);
 		return usuarioInserido;
@@ -42,7 +81,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	@Override
 	@Transactional
 	public UsuarioModel atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
-		UsuarioModel usuarioBd = usuarioRepository.findAdminById(id).orElseThrow(()-> new UsuarioNaoEncontrado());
+		UsuarioModel usuarioBd = usuarioRepository.findAdminById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
 		usuarioBd.setCpf(usuarioUpdateDTO.getCpf());
 		usuarioBd.setEmail(usuarioUpdateDTO.getEmail());
 		usuarioBd.setNomeUsuario(usuarioUpdateDTO.getNomeUsuario());

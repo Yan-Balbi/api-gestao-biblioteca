@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import edu.yan.gestaobiblioteca.handler.UsuarioNaoEncontrado;
+import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 
 @Configuration
@@ -28,7 +28,7 @@ public class ApplicationConfiguration {
             public UserDetails loadUserByUsername(String username) throws UsuarioNaoEncontrado {
                 // username = o que o usuário digitou na tela de login
                 return usuarioRepository.findByEmail(username) // aqui você decide buscar por email
-                        .orElseThrow(() -> new UsuarioNaoEncontrado());
+                        .orElseThrow(() -> new UsuarioNaoEncontrado("Usuário de email '"+username+"' não encontrado."));
             }
         };
     }

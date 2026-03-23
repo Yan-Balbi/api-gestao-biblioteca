@@ -22,6 +22,7 @@ public class UsuarioController {
 	
 	@PostMapping("/cliente")
 	public ResponseEntity<UsuarioModel> inserirCliente(@RequestBody UsuarioModel usuarioRequest){
+		
 		UsuarioModel usuarioCriado = usuarioImplementationService.inserirUsuario(usuarioRequest);
 		
 		URI local = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuarioCriado.getId()).toUri();
@@ -31,7 +32,7 @@ public class UsuarioController {
 	
     @GetMapping("/home")
     public String home(){
-        return "ola mundo";
+        return "home";
     }
 
 }
