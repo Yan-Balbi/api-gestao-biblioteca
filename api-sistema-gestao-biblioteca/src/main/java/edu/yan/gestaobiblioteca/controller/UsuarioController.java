@@ -23,7 +23,7 @@ public class UsuarioController {
 	@PostMapping("/cliente")
 	public ResponseEntity<UsuarioModel> inserirCliente(@RequestBody UsuarioModel usuarioRequest){
 		
-		UsuarioModel usuarioCriado = usuarioImplementationService.inserirUsuario(usuarioRequest);
+		UsuarioModel usuarioCriado = usuarioImplementationService.inserirCliente(usuarioRequest);
 		
 		URI local = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuarioCriado.getId()).toUri();
 		
