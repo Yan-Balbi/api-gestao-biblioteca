@@ -45,8 +45,9 @@ public class SecurityConfiguration {
                 .disable())
                 .authorizeHttpRequests(requests -> requests
                 		.requestMatchers(SWAGGER_WHITELIST).permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/usuario/cliente").permitAll()
+                        //.requestMatchers("/usuario/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/auth/cliente-signup").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/auth/cliente-login").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(management -> management
@@ -62,7 +63,7 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("http://localhost:8005"));
-        configuration.setAllowedMethods(List.of("GET","POST"));
+        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -3,7 +3,7 @@ package edu.yan.gestaobiblioteca.dto.usuario;
 public class LoginUsuarioDto {
     private String email;
     
-    private String password;
+    private String senha;
 
 	public String getEmail() {
 		return email;
@@ -12,10 +12,10 @@ public class LoginUsuarioDto {
 		this.email = email;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getSenha() {
+		return senha;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setSenha(String password) {
+		this.senha = password;
 	}
 }

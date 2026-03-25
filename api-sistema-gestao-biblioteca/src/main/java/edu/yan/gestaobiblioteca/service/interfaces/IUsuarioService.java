@@ -8,12 +8,14 @@ import edu.yan.gestaobiblioteca.model.UsuarioModel;
 public interface IUsuarioService {
 	
 	/*Administrador*/
-	UsuarioModel inserirAdmin(UsuarioModel usuarioModel);
+	//UsuarioModel inserirAdmin(UsuarioModel usuarioModel);
 	
 	UsuarioModel atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO);
 	
+	void deletarUsuario(Long id);
+	
 	/*Bibliotecario*/
-	UsuarioModel inserirBibliotecario(UsuarioModel usuarioModel);
+	//UsuarioModel inserirBibliotecario(UsuarioModel usuarioModel);
 	
 	//void deletarBibliotecario(Long id);
 	
@@ -24,7 +26,7 @@ public interface IUsuarioService {
 	Iterable<UsuarioModel> buscarTodosBibliotecarios();
 	
 	/*Cliente*/
-	UsuarioModel inserirCliente(UsuarioModel usuarioModel);
+	//UsuarioModel inserirCliente(UsuarioModel usuarioModel);
 	
 	//void deletarCliente(Long id);
 	

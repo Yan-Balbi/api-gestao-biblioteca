@@ -69,7 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             
 		} catch (Exception e) {
-			// TODO: handle exception
+			/*TODO: TRATAR ESSA EXCEÇÃO DPS*/
+	        handlerExceptionResolver.resolveException(request, response, null, e);
+	        return;
 		}
 		
 	}

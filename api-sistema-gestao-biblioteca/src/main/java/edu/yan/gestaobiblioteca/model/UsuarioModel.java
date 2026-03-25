@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -44,7 +45,6 @@ public class UsuarioModel implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = true)
     private Date updatedAt = null;
-    
     
     @Column(name = "deleted_at", nullable = true)
     private Date deletedAt = null;
@@ -122,10 +122,18 @@ public class UsuarioModel implements UserDetails {
 		this.updatedAt = updatedAt;
 	}
 
+	public Date getDeletedAt() {
+		return deletedAt;
+	}
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = deletedAt;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return List.of();
+		System.out.println("PAPEL ------------------ "+this.papel);
+		return List.of(new SimpleGrantedAuthority(this.papel));
 	}
 
 	@Override
@@ -140,4 +148,24 @@ public class UsuarioModel implements UserDetails {
 		return email;
 	}
 	
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -1,6 +1,7 @@
 package edu.yan.gestaobiblioteca.service.implementations;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,6 @@ public class UsuarioServiceImplementation implements IUsuarioService{
         this.usuarioRepository = usuarioRepository;
     }
 	
-    //TODO: corrigir esse algoritmo
     private static boolean cpfValido(String cpf) {
 		//remover todos os '.' e todos os '-' do trem
 		cpf = cpf.replace(".", "");
@@ -62,7 +62,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 		return true;
     }
     
-	private UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
+/*	private UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
 		if(!cpfValido(usuarioModel.getCpf())) {
 			throw new CpfInvalidoException("O CPF '"+usuarioModel.getCpf()+"' informado não é válido");
 		}
@@ -76,13 +76,13 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 		UsuarioModel usuarioInserido = usuarioRepository.save(usuarioModel);
 		return usuarioInserido;
 	}
-	
-	@Override
+*/	
+/*	@Override
 	public UsuarioModel inserirAdmin(UsuarioModel usuarioModel) {
 		usuarioModel.setPapel("ROLE_ADMIN");
 		return inserirUsuario(usuarioModel);
 	}
-
+*/
 	@Override
 	@Transactional
 	public UsuarioModel atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
@@ -93,13 +93,20 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 		usuarioBd.setSenha(usuarioUpdateDTO.getSenha());
 		return usuarioBd;
 	}
-
+	
 	@Override
+	@Transactional
+	public void deletarUsuario(Long id) {
+		UsuarioModel usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Usuario de id '"+id+"' não encotrado"));
+		usuarioBd.setDeletedAt(new Date());
+	}
+
+/*	@Override
 	public UsuarioModel inserirBibliotecario(UsuarioModel usuarioModel) {
 		usuarioModel.setPapel("ROLE_BIBLIOTECARIO");
 		return inserirUsuario(usuarioModel);
 	}
-
+*/
 	@Override
 	public Optional<UsuarioModel> buscarBibliotecarioPorCpf(String cpf) {
 		return usuarioRepository.findBibliotecarioByCpf(cpf);
@@ -117,12 +124,12 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 		return usuarioRepository.findTodosBibliotecarios();
 	}
 
-	@Override
+/*	@Override
 	public UsuarioModel inserirCliente(UsuarioModel usuarioModel) {
 		usuarioModel.setPapel("ROLE_CLIENTE");
 		return inserirUsuario(usuarioModel);
 	}
-
+*/
 	@Override
 	public Optional<UsuarioModel> buscarClientePorCpf(String cpf) {
 		return usuarioRepository.findClienteByCpf(cpf);
