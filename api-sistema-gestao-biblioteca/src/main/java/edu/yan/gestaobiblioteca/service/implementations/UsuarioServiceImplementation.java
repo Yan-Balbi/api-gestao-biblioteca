@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
 import edu.yan.gestaobiblioteca.exception.CpfInvalidoException;
 import edu.yan.gestaobiblioteca.exception.RegraDeNegocioException;
-import edu.yan.gestaobiblioteca.exception.UsuarioJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.CpfJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.UsuarioModel;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
@@ -29,7 +30,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
         this.usuarioRepository = usuarioRepository;
     }
 	
-
+    //TODO: corrigir esse algoritmo
     private static boolean cpfValido(String cpf) {
 		//remover todos os '.' e todos os '-' do trem
 		cpf = cpf.replace(".", "");
@@ -46,7 +47,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 		//	a*10  b*9  c*8  d*7  e*6  f*5  g*4  h*3  i*2
 		//agora tem que somar todos esses numeros. (a=1, b=2, ...,i=9)
 		//  10 + 18 + 24 + 28 + 30 + 30 + 28 + 16 + 18 = 210
-		int soma = listaNumerosCpf.stream().map(i -> listaNumerosCpf.get(i)*(10-i)).reduce(0, (a,b) -> a+b);
+		int soma = java.util.stream.IntStream.range(0, 9).map(i -> listaNumerosCpf.get(i) * (10 - i)).sum();
 		//Agora aplique a formula: (210 * 10) / 11 e obtenha o resto
 		int resto = soma%11;
 		
@@ -62,12 +63,16 @@ public class UsuarioServiceImplementation implements IUsuarioService{
     }
     
 	public UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
-		if(!usuarioRepository.findByCpf(usuarioModel.getCpf()).isEmpty()) {
-			throw new UsuarioJaCadastradoException("O CPF '"+usuarioModel.getCpf()+"'informado já está cadastrado");
-		}
 		if(!cpfValido(usuarioModel.getCpf())) {
 			throw new CpfInvalidoException("O CPF '"+usuarioModel.getCpf()+"' informado não é válido");
 		}
+		if(!usuarioRepository.findByCpf(usuarioModel.getCpf()).isEmpty()) {
+			throw new CpfJaCadastradoException("O CPF '"+usuarioModel.getCpf()+"'informado já está cadastrado");
+		}
+		if(!usuarioRepository.findByEmail(usuarioModel.getEmail()).isEmpty()) {
+			throw new EmailJaCadastradoException("O email '"+usuarioModel.getEmail()+"' informado já está cadastrado");
+		}
+
 		UsuarioModel usuarioInserido = usuarioRepository.save(usuarioModel);
 		return usuarioInserido;
 	}

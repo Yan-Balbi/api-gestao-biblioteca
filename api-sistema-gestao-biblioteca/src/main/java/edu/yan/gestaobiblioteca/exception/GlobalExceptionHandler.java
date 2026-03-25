@@ -14,8 +14,9 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler({
 	    CpfInvalidoException.class,
-	    UsuarioJaCadastradoException.class,
-	    UsuarioNaoEncontrado.class
+	    CpfJaCadastradoException.class,
+	    UsuarioNaoEncontrado.class,
+	    EmailJaCadastradoException.class
 	})
     public ProblemDetail handleUsuarioException(Exception exception) {
 		ProblemDetail detalheErro = null;
@@ -28,10 +29,16 @@ public class GlobalExceptionHandler {
 			detalheErro.setTitle("CPF Inválido.");
 		}
 		
-		if(exception instanceof UsuarioJaCadastradoException) {
+		if(exception instanceof CpfJaCadastradoException) {
 			detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
 			detalheErro.setDetail(exception.getMessage());
 			detalheErro.setTitle("CPF já cadastrado.");
+		}
+		
+		if(exception instanceof EmailJaCadastradoException) {
+			detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+			detalheErro.setDetail(exception.getMessage());
+			detalheErro.setTitle("Email já cadastrado.");
 		}
 		
 		if(exception instanceof UsuarioNaoEncontrado) {
