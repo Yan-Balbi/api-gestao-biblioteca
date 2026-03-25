@@ -62,15 +62,15 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 		return true;
     }
     
-	public UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
+	private UsuarioModel inserirUsuario(UsuarioModel usuarioModel) {
 		if(!cpfValido(usuarioModel.getCpf())) {
 			throw new CpfInvalidoException("O CPF '"+usuarioModel.getCpf()+"' informado não é válido");
 		}
-		if(!usuarioRepository.findByCpf(usuarioModel.getCpf()).isEmpty()) {
-			throw new CpfJaCadastradoException("O CPF '"+usuarioModel.getCpf()+"'informado já está cadastrado");
+		if(!usuarioRepository.findUsuarioByCpf(usuarioModel.getCpf()).isEmpty()) {
+			throw new CpfJaCadastradoException("O CPF '"+usuarioModel.getCpf()+"'informado já está em uso");
 		}
-		if(!usuarioRepository.findByEmail(usuarioModel.getEmail()).isEmpty()) {
-			throw new EmailJaCadastradoException("O email '"+usuarioModel.getEmail()+"' informado já está cadastrado");
+		if(!usuarioRepository.findUsuarioByEmail(usuarioModel.getEmail()).isEmpty()) {
+			throw new EmailJaCadastradoException("O email '"+usuarioModel.getEmail()+"' informado já está uso");
 		}
 
 		UsuarioModel usuarioInserido = usuarioRepository.save(usuarioModel);

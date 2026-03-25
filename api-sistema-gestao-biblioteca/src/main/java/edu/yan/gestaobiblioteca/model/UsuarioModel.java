@@ -22,13 +22,13 @@ public class UsuarioModel implements UserDetails {
 	@Column(unique = true, nullable = false)
 	private Long id;
 	
-	@Column(unique = true, length = 11, nullable = true)
+	@Column(unique = false, length = 11, nullable = true)
 	private String cpf;
 	
 	@Column(length = 100, nullable = false, name = "nome_usuario")
 	private String nomeUsuario;
 	
-	@Column(length = 100, nullable = false)
+	@Column(unique = false, length = 100, nullable = false)
 	private String email;
 	
 	@Column(length = 100, nullable = false)
@@ -42,8 +42,12 @@ public class UsuarioModel implements UserDetails {
     private Date createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    @Column(name = "updated_at", nullable = true)
+    private Date updatedAt = null;
+    
+    
+    @Column(name = "deleted_at", nullable = true)
+    private Date deletedAt = null;
 	
 	//many to many (usuario-papel)
 	
