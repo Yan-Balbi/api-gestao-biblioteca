@@ -16,7 +16,10 @@ public class GlobalExceptionHandler {
 	    CpfInvalidoException.class,
 	    CpfJaCadastradoException.class,
 	    UsuarioNaoEncontrado.class,
-	    EmailJaCadastradoException.class
+	    EmailJaCadastradoException.class,
+	    CredenciaisInvalidasException.class,
+	    UsuarioDesativadoException.class,
+	    UsuarioDeletadoException.class
 	})
     public ProblemDetail handleUsuarioException(Exception exception) {
 		ProblemDetail detalheErro = null;
@@ -51,6 +54,24 @@ public class GlobalExceptionHandler {
 			detalheErro = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 			detalheErro.setDetail(exception.getMessage());
 			detalheErro.setTitle("Erro interno do servidor desconhecido.");
+		}
+		
+		if (exception instanceof CredenciaisInvalidasException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Credenciais inválidas.");
+		}
+
+		if (exception instanceof UsuarioDesativadoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Usuário desativado.");
+		}
+		
+		if (exception instanceof UsuarioDeletadoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.GONE);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Usuário deletado.");
 		}
 		
 		return detalheErro;

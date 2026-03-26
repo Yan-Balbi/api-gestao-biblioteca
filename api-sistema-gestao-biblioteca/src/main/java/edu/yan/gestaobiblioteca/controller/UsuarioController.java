@@ -58,9 +58,9 @@ public class UsuarioController {
         return ResponseEntity.ok(loginResponse);
 	}
 	
-	@DeleteMapping("/usuario/{usuarioId}")
+	@DeleteMapping("/cliente/{usuarioId}")
 	public ResponseEntity<Void> deletarCliente(@PathVariable Long usuarioId){
-		
+		System.out.println("CHEGOU NO DELETE");
 		usuarioImplementationService.deletarUsuario(usuarioId);	
 		return ResponseEntity.noContent().build();
 	}

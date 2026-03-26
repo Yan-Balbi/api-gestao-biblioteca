@@ -2,8 +2,11 @@ package edu.yan.gestaobiblioteca.service.implementations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,7 +14,11 @@ import org.springframework.stereotype.Service;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
 import edu.yan.gestaobiblioteca.exception.CpfInvalidoException;
 import edu.yan.gestaobiblioteca.exception.CpfJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.CredenciaisInvalidasException;
 import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.UsuarioDeletadoException;
+import edu.yan.gestaobiblioteca.exception.UsuarioDesativadoException;
+import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.UsuarioModel;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.interfaces.IAuthenticationService;
@@ -98,6 +105,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 		return signup(usuarioModel);
 	}
 
+/*
     @Override
     public UsuarioModel authenticate(LoginUsuarioDto input) {
         try {
@@ -107,14 +115,54 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 	                        input.getSenha()
 	                )
 	        );
-        } catch (Exception e) {
-            System.out.println("ERRO REAL:");
-            e.printStackTrace();
-            throw e;
+        } catch (BadCredentialsException e) {
+        	System.out.println("EMAIL INVÁLIDO");
+        	throw new CredenciaisInvalidasException("Email ou senha inválidos");
+        } catch (DisabledException e) {
+        	System.out.println("USUARIO DESATIVADO");
+        	throw new UsuarioDesativadoException("Usuário desativado");
         }
         
-        return usuarioRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+        return usuarioRepository.findUsuarioByEmail(input.getEmail())
+                .orElseThrow(() -> new UsuarioNaoEncontrado("Email '"+input.getEmail()+"' não encontrado"));
     }
+*/
+    
+	@Override
+    public UsuarioModel authenticate(LoginUsuarioDto input) {
+
+        // busca usuario ATIVO (com o deleted_at == NULL)
+        Optional<UsuarioModel> usuarioAtivo =
+            usuarioRepository.findByEmailAndDeletedAtIsNull(input.getEmail());
+
+        if (usuarioAtivo.isPresent()) {
+            try {
+                authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                        input.getEmail(),
+                        input.getSenha()
+                    )
+                );
+            } catch (BadCredentialsException e) {
+                throw new CredenciaisInvalidasException("Email ou senha inválidos");
+            } catch (DisabledException e) {
+                throw new UsuarioDesativadoException("Usuário desativado");
+            }
+
+            return usuarioAtivo.get();
+        }
+
+        //se não tem usuario ativo, verifica se tem 1 ou + deletado
+        boolean existeDeletado =
+            usuarioRepository.existsByEmailAndDeletedAtIsNotNull(input.getEmail());
+
+        if (existeDeletado) {
+            throw new UsuarioDeletadoException("Usuário foi excluído");
+        }
+
+        //usuari não existe mesmo
+        throw new UsuarioNaoEncontrado("Email '"+input.getEmail()+"' não encontrado");
+    }
+
 
 }

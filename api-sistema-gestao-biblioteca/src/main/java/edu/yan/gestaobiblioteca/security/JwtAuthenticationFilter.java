@@ -17,7 +17,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+//o Filter é um middleware
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		//acessando o campo authorization do JSON request
 		String cabecalhoAutenticacao = request.getHeader("Authorization");
 		
+		//para acessar endpoints públicos, não precisa de autenticacao
         if (cabecalhoAutenticacao == null || !cabecalhoAutenticacao.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -67,9 +68,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-            
+            filterChain.doFilter(request, response);
 		} catch (Exception e) {
-			/*TODO: TRATAR ESSA EXCEÇÃO DPS*/
 	        handlerExceptionResolver.resolveException(request, response, null, e);
 	        return;
 		}

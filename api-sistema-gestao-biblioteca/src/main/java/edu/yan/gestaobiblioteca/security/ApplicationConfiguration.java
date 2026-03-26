@@ -27,7 +27,7 @@ public class ApplicationConfiguration {
         return new UserDetailsService() {
             public UserDetails loadUserByUsername(String username) throws UsuarioNaoEncontrado {
                 // username = o que o usuário digitou na tela de login
-                return usuarioRepository.findByEmail(username) // aqui você decide buscar por email
+                return usuarioRepository.findUsuarioByEmail(username) // aqui você decide buscar por email
                         .orElseThrow(() -> new UsuarioNaoEncontrado("Usuário de email '"+username+"' não encontrado."));
             }
         };
@@ -45,9 +45,9 @@ public class ApplicationConfiguration {
     
     @Bean
     AuthenticationProvider authenticationProvider() {
-    	DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    	DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
     	
-    	authProvider.setUserDetailsService(userDetailsService());
+    	//authProvider.setUserDetailsService(userDetailsService());
     	authProvider.setPasswordEncoder(passwordEncoder());
     	
     	return authProvider;

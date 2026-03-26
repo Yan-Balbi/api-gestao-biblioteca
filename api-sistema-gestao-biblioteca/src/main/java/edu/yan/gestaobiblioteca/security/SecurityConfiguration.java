@@ -53,6 +53,7 @@ public class SecurityConfiguration {
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
+                //basicamente eu to adicionando um filtro de token jwt antes do filtro 'UsernamePasswordAuthenticationFilter'
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -73,3 +74,28 @@ public class SecurityConfiguration {
         return source;
     }
 }
+
+/*antes do addFilterBefore:
+SecurityContextHolderFilter
+CorsFilter
+CsrfFilter
+LogoutFilter
+UsernamePasswordAuthenticationFilter
+BasicAuthenticationFilter
+ExceptionTranslationFilter
+FilterSecurityInterceptor
+*/
+
+/*depois do addFilterBefore:
+SecurityContextHolderFilter
+CorsFilter
+CsrfFilter
+LogoutFilter
+JwtAuthenticationFilter   ← SEU FILTRO
+UsernamePasswordAuthenticationFilter
+BasicAuthenticationFilter
+ExceptionTranslationFilter 
+ */
+
+
+

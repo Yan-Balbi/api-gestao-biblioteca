@@ -17,6 +17,10 @@ public interface UsuarioRepository extends CrudRepository<UsuarioModel, Long>{
 	
 	Optional<UsuarioModel> findByEmail(String email);
 	
+	Optional<UsuarioModel> findByEmailAndDeletedAtIsNull(String email);
+	
+	boolean existsByEmailAndDeletedAtIsNotNull(String email);
+	
 	@Query("SELECT u FROM UsuarioModel u WHERE u.cpf = :usuarioCpf AND u.deletedAt IS NULL")
 	Optional<UsuarioModel> findUsuarioByCpf(@Param("usuarioCpf") String cpf);
 	
