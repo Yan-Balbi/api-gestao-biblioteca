@@ -109,7 +109,7 @@ public class JwtServiceImplementation implements IJwtService{
 	@Override
 	public long getTempoExpiracao() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.expiracaoJwt;
 	}
 	
     private Date extrairExpiracao(String token) {
