@@ -72,7 +72,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
     }
 
     private UsuarioModel signup(UsuarioModel usuarioModel) {
-		if(!cpfValido(usuarioModel.getCpf())) {
+		if(!cpfValido(usuarioModel.getCpf()) && !usuarioModel.isAdmin()) {
 			throw new CpfInvalidoException("O CPF '"+usuarioModel.getCpf()+"' informado não é válido");
 		}
 		if(!usuarioRepository.findUsuarioByCpf(usuarioModel.getCpf()).isEmpty()) {

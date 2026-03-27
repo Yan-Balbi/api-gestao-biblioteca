@@ -135,6 +135,12 @@ public class UsuarioModel implements UserDetails {
 		System.out.println("PAPEL ------------------ "+this.papel);
 		return List.of(new SimpleGrantedAuthority(this.papel));
 	}
+	
+	public boolean isAdmin() {
+	    return getAuthorities()
+	        .stream()
+	        .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
+	}
 
 	@Override
 	public String getPassword() {
