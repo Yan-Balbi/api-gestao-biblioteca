@@ -13,7 +13,8 @@ API REST para gestão de biblioteca, desenvolvida para gerenciar o cadastro de l
 - O sistema deve permitir que o bibliotecário/administrador cadastre/atualize/inative um livro.
 - Nenhum dado é efetivamente excluido do sistema SGBD, isso vale para qualquer tabela, um item de uma tabela só é marcado como inativo, mas nunca é de fato removido (todas as tabelas precisam ter um campo chamado ativo então).
 - O sistema deve permitir que o administrador cadastre/atualize/inative um bibliotecário.
-- O sistema
+- O sistema deve permitir cadastrar novos usuários com as credenciais usadas em contas já apagadas
+- Nesse sistema específico, os CPF e o email não podem ser unique, uma vez que eles podeme estar em uma conta apagada
 //continuar
 
 ### 1.3 Levantamento de Requisitos não funcionais
@@ -30,7 +31,10 @@ API REST para gestão de biblioteca, desenvolvida para gerenciar o cadastro de l
 | RN03   | Atualização da Fila de Reservas | Quando um empréstimo previamente reservado é iniciado, a fila de reservas deve ser atualizada.                                                         | O número de reserva de todos os outros clientes deve ser decrementado.                                                      |
 | RN04   | Expiração de Reserva            | Uma reserva deve ser encerrada caso o empréstimo não seja iniciado dentro de um período definido.                                                      | Se o empréstimo não for efetuado em **X dias** definidos pelo campo `tempoExpiracaoAgendamento` em **Regras**.              |
 | RN05   | Restrição de Role               | Um usuário pode possuir apenas uma role no sistema.                                                                                                    | Role única entre: **CLIENTE**, **BIBLIOTECARIO**, **ADMIN**.                                                                |
-| RN06   | Empréstimo de Livro             | Cadastro de usuários clientes no sistema.                                                                                           | Cliente só pode criar uma conta se o CPF inserido for **válido** e o mesmo CPF não estiver cadastrado na conta te um mesmo usuário de mesma role BD. 
+| RN06   | Cadastro de usuários clientes no sistema            | Um cliente só pode criar uma conta se o CPF inserido for **válido** e o CPF e o email não estiverem cadastrados na conta de um outro usuário ativo no BD.                                                                                           | Caso o CPF seja inválido, o sistema deve gerar uma exceção de `CPF inválido`; caso o email já esteja em uso em outra conta ativa (que não foi soft-deletado do sistema), o sistema deve lançar uma exceção de `usuário já cadastrado`; caso o CPF já esteja em uso em outra conta ativa (que não foi soft-deletado do sistema), o sistema deve lançar uma exceção de `CPF já cadastrado`. Após passar por essas 3 verificações, a conta pode ser criada com sucesso. 
+| RN07   | Inserção do primeiro admin      | O sistema deve fazer o cadastro de um usuário de role admin automaticamente no sistema.                                                                                           | Toda vez que o sistema iniciar, ele deve verificar se há algum usuário admin ativo. Se não houver, ele deve criar um usuário com as credenciais padrões de admin e com o CPF '000.000.000-00', email 'admin-email@email.com', senha '#!segredo-admin-gestao-biblio!#' (por que na primeira vez que o sistema for executado o admin precisará logar de alguma forma, e o CPF, email e senha devem ser conhecidos).
+| RN08   | Soft-delete de usuários      | O sistema deve manter o histórico e rastreabilidade dos empréstimos feitos mesmo após a remoção de um usuário.                                                                                           | Quando um usuário for removido, ele precisa ser mantido no banco de dados, para isso, a remoção de um usuário é um update que adiciona um valor ao campo  DATETIME `deleted-at` da tabela de usuários do BD, que por padrão é null. Para que ele possa ser removido, o campo `deleted-at` deve ter o valor nulo, caso ele já tenha uma data vinculada, o sistema deve lançar uma exceção `Usuário já apagado ` ao tentar apagar.
+
 
 
 ##2. DESCRICAO DOS CASOS DE USO
