@@ -72,7 +72,16 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
     }
 
     private UsuarioModel signup(UsuarioModel usuarioModel) {
-		if(!cpfValido(usuarioModel.getCpf()) && !usuarioModel.isAdmin()) {
+		if(usuarioModel.getCpf() != null) {
+		    String cpf = usuarioModel.getCpf().replace(".", "").replace("-", "");
+		    usuarioModel.setCpf(cpf);
+		}
+    	
+    	if(usuarioModel.getCpf() == null || usuarioModel.getCpf().length() < 11) {
+    	    throw new CpfInvalidoException("CPF inválido");
+    	}
+    	
+		if(!cpfValido(usuarioModel.getCpf())) {
 			throw new CpfInvalidoException("O CPF '"+usuarioModel.getCpf()+"' informado não é válido");
 		}
 		if(!usuarioRepository.findUsuarioByCpf(usuarioModel.getCpf()).isEmpty()) {
@@ -80,6 +89,26 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 		}
 		if(!usuarioRepository.findUsuarioByEmail(usuarioModel.getEmail()).isEmpty()) {
 			throw new EmailJaCadastradoException("O email '"+usuarioModel.getEmail()+"' informado já está uso");
+		}
+		
+    	//encryptando a senha pra não expor-la no bd
+    	usuarioModel.setSenha(passwordEncoder.encode(usuarioModel.getPassword()));
+        return usuarioRepository.save(usuarioModel);
+    }
+    
+    public UsuarioModel inserirPrimeiroAdmin(UsuarioModel usuarioModel) {
+    	usuarioModel.setPapel("ROLE_ADMIN");
+
+		if(!usuarioRepository.findUsuarioByCpf(usuarioModel.getCpf()).isEmpty()) {
+			throw new CpfJaCadastradoException("O CPF '"+usuarioModel.getCpf()+"'informado já está em uso");
+		}
+		if(!usuarioRepository.findUsuarioByEmail(usuarioModel.getEmail()).isEmpty()) {
+			throw new EmailJaCadastradoException("O email '"+usuarioModel.getEmail()+"' informado já está uso");
+		}
+		
+		if(usuarioModel.getCpf() != null) {
+		    String cpf = usuarioModel.getCpf().replace(".", "").replace("-", "");
+		    usuarioModel.setCpf(cpf);
 		}
 		
     	//encryptando a senha pra não expor-la no bd

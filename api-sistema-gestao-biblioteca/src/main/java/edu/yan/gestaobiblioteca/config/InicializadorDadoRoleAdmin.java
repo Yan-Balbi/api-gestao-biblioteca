@@ -24,7 +24,7 @@ public class InicializadorDadoRoleAdmin {
                 admin.setEmail("admin@admin.com");
                 admin.setCpf("00000000000");
                 admin.setSenha("123456");
-				authenticatioServiceImplementation.signupAdmin(admin);
+				authenticatioServiceImplementation.inserirPrimeiroAdmin(admin);
 			}
 		};
 	}
