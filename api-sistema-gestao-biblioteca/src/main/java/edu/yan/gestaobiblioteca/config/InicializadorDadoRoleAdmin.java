@@ -21,9 +21,9 @@ public class InicializadorDadoRoleAdmin {
 			if (!existeAdmin) {
                 UsuarioModel admin = new UsuarioModel();
                 admin.setNomeUsuario("Administrador");
-                admin.setEmail("admin@admin.com");
+                admin.setEmail("admin-email@email.com");
                 admin.setCpf("00000000000");
-                admin.setSenha("123456");
+                admin.setSenha("#!segredo-admin-gestao-biblio!#");
 				authenticatioServiceImplementation.inserirPrimeiroAdmin(admin);
 			}
 		};
