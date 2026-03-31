@@ -63,6 +63,26 @@ public class UsuarioServiceImplementationTest {
 	    });
 	}
 	
+	@Test
+	void deveLancarExcecaoAoAtualizarUsuarioInexistente() {
+	    Long id = 1L;
+
+	    UsuarioUpdateDTO usuario = new UsuarioUpdateDTO();
+
+	    UsuarioUpdateDTO dto = new UsuarioUpdateDTO();
+	    dto.setCpf("123");
+	    dto.setEmail("teste@email.com");
+	    dto.setNomeUsuario("Yan");
+	    dto.setSenha("123456");
+
+	    when(usuarioRepository.findAdminById(id))
+	        .thenReturn(Optional.empty());
+
+	    assertThrows(UsuarioNaoEncontrado.class, () -> {
+	    	usuarioServiceImplementation.atualizarUsuario(id, dto);
+	    });
+	}
+	
 	//testes menos críticos
 	@Test
 	void deveAtualizarUsuarioComSucesso() {
