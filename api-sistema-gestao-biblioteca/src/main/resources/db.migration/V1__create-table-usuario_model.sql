@@ -1,4 +1,4 @@
-CREATE TABLE usuario_model (
+CREATE TABLE usuario (
     id BIGSERIAL PRIMARY KEY,
     
     cpf VARCHAR(11),
