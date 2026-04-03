@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
+import edu.yan.gestaobiblioteca.exception.usuario.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 
 @Configuration
