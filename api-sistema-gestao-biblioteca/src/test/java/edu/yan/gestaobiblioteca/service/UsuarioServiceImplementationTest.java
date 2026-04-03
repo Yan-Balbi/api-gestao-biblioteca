@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
-import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
+import edu.yan.gestaobiblioteca.exception.usuario.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementation;

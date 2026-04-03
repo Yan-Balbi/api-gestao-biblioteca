@@ -8,11 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
-import edu.yan.gestaobiblioteca.exception.CpfInvalidoException;
-import edu.yan.gestaobiblioteca.exception.RegraDeNegocioException;
-import edu.yan.gestaobiblioteca.exception.CpfJaCadastradoException;
-import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
-import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
+import edu.yan.gestaobiblioteca.exception.usuario.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.interfaces.IUsuarioService;

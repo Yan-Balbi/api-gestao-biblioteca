@@ -13,9 +13,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import edu.yan.gestaobiblioteca.exception.CpfInvalidoException;
-import edu.yan.gestaobiblioteca.exception.CpfJaCadastradoException;
-import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.usuario.CpfInvalidoException;
+import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
+import edu.yan.gestaobiblioteca.exception.usuario.EmailJaCadastradoException;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
