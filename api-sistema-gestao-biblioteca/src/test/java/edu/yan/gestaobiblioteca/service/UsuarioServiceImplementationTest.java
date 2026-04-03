@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
 import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementation;
 
@@ -88,7 +88,7 @@ public class UsuarioServiceImplementationTest {
 	void deveAtualizarUsuarioComSucesso() {
 	    Long id = 1L;
 
-	    UsuarioModel usuario = new UsuarioModel();
+	    Usuario usuario = new Usuario();
 	    usuario.setId(id);
 
 	    UsuarioUpdateDTO dto = new UsuarioUpdateDTO();
@@ -100,7 +100,7 @@ public class UsuarioServiceImplementationTest {
 	    when(usuarioRepository.findAdminById(id))
 	        .thenReturn(Optional.of(usuario));
 
-	    UsuarioModel resultado = usuarioServiceImplementation.atualizarUsuario(id, dto);
+	    Usuario resultado = usuarioServiceImplementation.atualizarUsuario(id, dto);
 
 	    assertEquals("123", resultado.getCpf());
 	    assertEquals("teste@email.com", resultado.getEmail());
@@ -112,12 +112,12 @@ public class UsuarioServiceImplementationTest {
 	void deveBuscarClientePorCpf() {
 	    String cpf = "123";
 
-	    UsuarioModel usuario = new UsuarioModel();
+	    Usuario usuario = new Usuario();
 
 	    when(usuarioRepository.findClienteByCpf(cpf))
 	        .thenReturn(Optional.of(usuario));
 
-	    Optional<UsuarioModel> resultado = usuarioServiceImplementation.buscarClientePorCpf(cpf);
+	    Optional<Usuario> resultado = usuarioServiceImplementation.buscarClientePorCpf(cpf);
 
 	    assertTrue(resultado.isPresent());
 	    verify(usuarioRepository).findClienteByCpf(cpf);

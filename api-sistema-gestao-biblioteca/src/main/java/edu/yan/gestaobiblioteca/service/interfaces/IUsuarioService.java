@@ -3,14 +3,14 @@ package edu.yan.gestaobiblioteca.service.interfaces;
 import java.util.Optional;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 
 public interface IUsuarioService {
 	
 	/*Administrador*/
 	//UsuarioModel inserirAdmin(UsuarioModel usuarioModel);
 	
-	UsuarioModel atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO);
+	Usuario atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO);
 	
 	void deletarUsuario(Long id);
 	
@@ -19,21 +19,21 @@ public interface IUsuarioService {
 	
 	//void deletarBibliotecario(Long id);
 	
-	Optional<UsuarioModel> buscarBibliotecarioPorCpf(String cpf);
+	Optional<Usuario> buscarBibliotecarioPorCpf(String cpf);
 	
-	Iterable<UsuarioModel> buscarBibliotecarioPorNome(String cpf);
+	Iterable<Usuario> buscarBibliotecarioPorNome(String cpf);
 	
-	Iterable<UsuarioModel> buscarTodosBibliotecarios();
+	Iterable<Usuario> buscarTodosBibliotecarios();
 	
 	/*Cliente*/
 	//UsuarioModel inserirCliente(UsuarioModel usuarioModel);
 	
 	//void deletarCliente(Long id);
 	
-	Optional<UsuarioModel> buscarClientePorCpf(String cpf);
+	Optional<Usuario> buscarClientePorCpf(String cpf);
 	
-	Iterable<UsuarioModel> buscarClientePorNome(String cpf);
+	Iterable<Usuario> buscarClientePorNome(String cpf);
 	
-	Iterable<UsuarioModel> buscarTodosClientes();
+	Iterable<Usuario> buscarTodosClientes();
 	
 }

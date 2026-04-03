@@ -24,7 +24,7 @@ public class Suspensao {
 	//FetchType.EAGER o objeto já vem com oss objetos associados carregados
     @ManyToOne(fetch = FetchType.LAZY) // ou EAGER, dependendo do uso
     @JoinColumn(name = "usuario_id", nullable = false) // define a coluna como FK
-    private UsuarioModel usuario;
+    private Usuario usuario;
 	
 	@CreationTimestamp
     @Column(updatable = false, name = "data_inicio")

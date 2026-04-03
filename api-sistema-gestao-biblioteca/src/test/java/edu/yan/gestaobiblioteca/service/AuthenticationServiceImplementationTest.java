@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import edu.yan.gestaobiblioteca.exception.CpfInvalidoException;
 import edu.yan.gestaobiblioteca.exception.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
 
@@ -46,7 +46,7 @@ public class AuthenticationServiceImplementationTest {
 	 */
 	@Test
 	void deveLancarExcecaoQuandoCpfInvalido() {
-	    UsuarioModel usuario = new UsuarioModel();
+	    Usuario usuario = new Usuario();
 	    usuario.setNomeUsuario("nome");
 	    usuario.setEmail("email@email.com");
 	    usuario.setCpf("123"); // inválido
@@ -59,12 +59,12 @@ public class AuthenticationServiceImplementationTest {
 	
 	@Test
 	void deveLancarExcecaoQuandoCpfJaExiste() {
-	    UsuarioModel usuario = new UsuarioModel();
+	    Usuario usuario = new Usuario();
 	    //inserindo um cpf válido gerado aleatoriamente
 	    usuario.setCpf("197.137.440-71");
 	
 	    when(usuarioRepository.findUsuarioByCpf("19713744071"))
-	        .thenReturn(Optional.of(new UsuarioModel()));
+	        .thenReturn(Optional.of(new Usuario()));
 	
 	    assertThrows(CpfJaCadastradoException.class, () -> {
 	    	authServiceImpl.signupAdmin(usuario);
@@ -73,13 +73,13 @@ public class AuthenticationServiceImplementationTest {
 	
 	@Test
 	void deveLancarExcecaoQuandoEmailJaExiste() {
-	    UsuarioModel usuario = new UsuarioModel();
+	    Usuario usuario = new Usuario();
 	    usuario.setEmail("teste@email.com");
 	    usuario.setCpf("197.137.440-71");
 	    usuario.setSenha("123");
 	
 	    when(usuarioRepository.findUsuarioByEmail("teste@email.com"))
-	        .thenReturn(Optional.of(new UsuarioModel()));
+	        .thenReturn(Optional.of(new Usuario()));
 	
 	    assertThrows(EmailJaCadastradoException.class, () -> {
 	    	authServiceImpl.signupAdmin(usuario);

@@ -19,7 +19,7 @@ import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.UsuarioDeletadoException;
 import edu.yan.gestaobiblioteca.exception.UsuarioDesativadoException;
 import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.interfaces.IAuthenticationService;
 
@@ -71,7 +71,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 		return true;
     }
 
-    private UsuarioModel signup(UsuarioModel usuarioModel) {
+    private Usuario signup(Usuario usuarioModel) {
 		if(usuarioModel.getCpf() != null) {
 		    String cpf = usuarioModel.getCpf().replace(".", "").replace("-", "");
 		    usuarioModel.setCpf(cpf);
@@ -96,7 +96,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
         return usuarioRepository.save(usuarioModel);
     }
     
-    public UsuarioModel inserirPrimeiroAdmin(UsuarioModel usuarioModel) {
+    public Usuario inserirPrimeiroAdmin(Usuario usuarioModel) {
     	usuarioModel.setPapel("ROLE_ADMIN");
 
 		if(!usuarioRepository.findUsuarioByCpf(usuarioModel.getCpf()).isEmpty()) {
@@ -117,19 +117,19 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
     }
 
 	@Override
-	public UsuarioModel signupAdmin(UsuarioModel usuarioModel) {
+	public Usuario signupAdmin(Usuario usuarioModel) {
 		usuarioModel.setPapel("ROLE_ADMIN");
 		return signup(usuarioModel);
 	}
     
 	@Override
-	public UsuarioModel signupBibliotecario(UsuarioModel usuarioModel) {
+	public Usuario signupBibliotecario(Usuario usuarioModel) {
 		usuarioModel.setPapel("ROLE_BIBLIOTECARIO");
 		return signup(usuarioModel);
 	}
 	
 	@Override
-	public UsuarioModel signupCliente(UsuarioModel usuarioModel) {
+	public Usuario signupCliente(Usuario usuarioModel) {
 		usuarioModel.setPapel("ROLE_CLIENTE");
 		return signup(usuarioModel);
 	}
@@ -158,10 +158,10 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 */
     
 	@Override
-    public UsuarioModel authenticate(LoginUsuarioDto input) {
+    public Usuario authenticate(LoginUsuarioDto input) {
 
         // busca usuario ATIVO (com o deleted_at == NULL)
-        Optional<UsuarioModel> usuarioAtivo =
+        Optional<Usuario> usuarioAtivo =
             usuarioRepository.findByEmailAndDeletedAtIsNull(input.getEmail());
 
         if (usuarioAtivo.isPresent()) {

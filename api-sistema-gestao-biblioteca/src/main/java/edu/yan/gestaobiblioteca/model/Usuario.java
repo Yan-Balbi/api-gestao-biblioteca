@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuario")
-public class UsuarioModel implements UserDetails {
+public class Usuario implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
@@ -57,11 +57,11 @@ public class UsuarioModel implements UserDetails {
 
 	//many to one (suspensao-usuario)
 	
-	public UsuarioModel() {
+	public Usuario() {
 		
 	}
 	
-	public UsuarioModel(String cpf, String nomeUsuario, String email, String senha) {
+	public Usuario(String cpf, String nomeUsuario, String email, String senha) {
 		setCpf(cpf);
 		setNomeUsuario(nomeUsuario);
 		setEmail(email);

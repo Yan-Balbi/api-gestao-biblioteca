@@ -17,7 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.yan.gestaobiblioteca.dto.usuario.LoginResposta;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
 import edu.yan.gestaobiblioteca.service.implementations.JwtServiceImplementation;
 import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementation;
@@ -35,9 +35,9 @@ public class UsuarioController {
 	private JwtServiceImplementation jwtServiceImplementation;
 	
 	@PostMapping("/auth/cliente-signup")
-	public ResponseEntity<UsuarioModel> inserirCliente(@RequestBody UsuarioModel usuarioRequest){
+	public ResponseEntity<Usuario> inserirCliente(@RequestBody Usuario usuarioRequest){
 		
-		UsuarioModel usuarioCriado = authenticatioServiceImplementation.signupCliente(usuarioRequest);
+		Usuario usuarioCriado = authenticatioServiceImplementation.signupCliente(usuarioRequest);
 		
 		URI local = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuarioCriado.getId()).toUri();
 		
@@ -47,7 +47,7 @@ public class UsuarioController {
 	@PostMapping("/auth/cliente-login")
 	public ResponseEntity<LoginResposta> login(@RequestBody LoginUsuarioDto loginUsuarioDto){
 		
-        UsuarioModel authenticatedUser = authenticatioServiceImplementation.authenticate(loginUsuarioDto);
+        Usuario authenticatedUser = authenticatioServiceImplementation.authenticate(loginUsuarioDto);
 
         String jwtToken = jwtServiceImplementation.gerarToken(authenticatedUser);
 

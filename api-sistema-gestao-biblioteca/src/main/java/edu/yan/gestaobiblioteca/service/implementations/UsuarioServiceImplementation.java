@@ -13,7 +13,7 @@ import edu.yan.gestaobiblioteca.exception.RegraDeNegocioException;
 import edu.yan.gestaobiblioteca.exception.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.EmailJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.UsuarioNaoEncontrado;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.interfaces.IUsuarioService;
 import jakarta.transaction.Transactional;
@@ -85,8 +85,8 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 */
 	@Override
 	@Transactional
-	public UsuarioModel atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
-		UsuarioModel usuarioBd = usuarioRepository.findAdminById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
+	public Usuario atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
+		Usuario usuarioBd = usuarioRepository.findAdminById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
 		usuarioBd.setCpf(usuarioUpdateDTO.getCpf());
 		usuarioBd.setEmail(usuarioUpdateDTO.getEmail());
 		usuarioBd.setNomeUsuario(usuarioUpdateDTO.getNomeUsuario());
@@ -97,7 +97,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	@Override
 	@Transactional
 	public void deletarUsuario(Long id) {
-		UsuarioModel usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Usuario de id '"+id+"' não encotrado"));
+		Usuario usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Usuario de id '"+id+"' não encotrado"));
 		usuarioBd.setDeletedAt(new Date());
 	}
 
@@ -108,18 +108,18 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	}
 */
 	@Override
-	public Optional<UsuarioModel> buscarBibliotecarioPorCpf(String cpf) {
+	public Optional<Usuario> buscarBibliotecarioPorCpf(String cpf) {
 		return usuarioRepository.findBibliotecarioByCpf(cpf);
 	}
 
 	@Override
-	public Iterable<UsuarioModel> buscarBibliotecarioPorNome(String nome) {
+	public Iterable<Usuario> buscarBibliotecarioPorNome(String nome) {
 
 		return usuarioRepository.findBibliotecarioByNome(nome);
 	}
 
 	@Override
-	public Iterable<UsuarioModel> buscarTodosBibliotecarios() {
+	public Iterable<Usuario> buscarTodosBibliotecarios() {
 		
 		return usuarioRepository.findTodosBibliotecarios();
 	}
@@ -131,18 +131,18 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	}
 */
 	@Override
-	public Optional<UsuarioModel> buscarClientePorCpf(String cpf) {
+	public Optional<Usuario> buscarClientePorCpf(String cpf) {
 		return usuarioRepository.findClienteByCpf(cpf);
 	}
 
 	@Override
-	public Iterable<UsuarioModel> buscarClientePorNome(String nome) {
+	public Iterable<Usuario> buscarClientePorNome(String nome) {
 
 		return usuarioRepository.findClienteByNome(nome);
 	}
 
 	@Override
-	public Iterable<UsuarioModel> buscarTodosClientes() {
+	public Iterable<Usuario> buscarTodosClientes() {
 
 		return usuarioRepository.findTodosClientes();
 	}

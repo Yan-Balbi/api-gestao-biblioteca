@@ -1,14 +1,14 @@
 package edu.yan.gestaobiblioteca.service.interfaces;
 
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 
 public interface IAuthenticationService {
-	UsuarioModel signupAdmin(UsuarioModel usuarioModel);
+	Usuario signupAdmin(Usuario usuarioModel);
 	
-	UsuarioModel signupBibliotecario(UsuarioModel usuarioModel);
+	Usuario signupBibliotecario(Usuario usuarioModel);
 
-	UsuarioModel signupCliente(UsuarioModel usuarioModel);
+	Usuario signupCliente(Usuario usuarioModel);
 	
-    UsuarioModel authenticate(LoginUsuarioDto input);
+    Usuario authenticate(LoginUsuarioDto input);
 }

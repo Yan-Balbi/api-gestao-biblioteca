@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import edu.yan.gestaobiblioteca.model.UsuarioModel;
+import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
 
@@ -19,7 +19,7 @@ public class InicializadorDadoRoleAdmin {
 			boolean existeAdmin = usuarioRepository.existsByPapel("ROLE_ADMIN");
 			
 			if (!existeAdmin) {
-                UsuarioModel admin = new UsuarioModel();
+                Usuario admin = new Usuario();
                 admin.setNomeUsuario("Administrador");
                 admin.setEmail("admin-email@email.com");
                 admin.setCpf("00000000000");
