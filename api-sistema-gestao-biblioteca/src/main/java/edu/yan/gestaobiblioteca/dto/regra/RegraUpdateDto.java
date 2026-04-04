@@ -2,11 +2,11 @@ package edu.yan.gestaobiblioteca.dto.regra;
 
 public class RegraUpdateDto {
 
-	private int duracaoSuspensao;
+	private int duracaoSuspensaoUsuario;
 	
-	private int tempoDuracaoAgendamento;
+	private int tempoDuracaoEmprestimo;
 	
-	private int tempoExpiracaoAgendamento;
+	private int tempoExpiracaoReserva;
 	
 	private int quantidadeMaximaEmprestimos;
 	
@@ -15,31 +15,31 @@ public class RegraUpdateDto {
 	}
 	
 	public RegraUpdateDto(int duracaoSuspensao, int tempoDuracaoAgendamento, int tempoExpiracaoAgendamento, int quantidadeMaximaEmprestimos) {
-		setDuracaoSuspensao(duracaoSuspensao);
-		setTempoDuracaoAgendamento(tempoDuracaoAgendamento);
-		setTempoExpiracaoAgendamento(tempoExpiracaoAgendamento);
+		setDuracaoSuspensaoUsuario(duracaoSuspensao);
+		setTempoDuracaoEmprestimo(tempoDuracaoAgendamento);
+		setTempoExpiracaoReserva(tempoExpiracaoAgendamento);
 		setQuantidadeMaximaEmprestimos(quantidadeMaximaEmprestimos);
 	}
 
-	public int getDuracaoSuspensao() {
-		return duracaoSuspensao;
+	public int getDuracaoSuspensaoUsuario() {
+		return duracaoSuspensaoUsuario;
 	}
-	public void setDuracaoSuspensao(int duracaoSuspensao) {
-		this.duracaoSuspensao = duracaoSuspensao;
-	}
-
-	public int getTempoDuracaoAgendamento() {
-		return tempoDuracaoAgendamento;
-	}
-	public void setTempoDuracaoAgendamento(int tempoDuracaoAgendamento) {
-		this.tempoDuracaoAgendamento = tempoDuracaoAgendamento;
+	public void setDuracaoSuspensaoUsuario(int duracaoSuspensao) {
+		this.duracaoSuspensaoUsuario = duracaoSuspensao;
 	}
 
-	public int getTempoExpiracaoAgendamento() {
-		return tempoExpiracaoAgendamento;
+	public int getTempoDuracaoEmprestimo() {
+		return tempoDuracaoEmprestimo;
 	}
-	public void setTempoExpiracaoAgendamento(int tempoExpiracaoAgendamento) {
-		this.tempoExpiracaoAgendamento = tempoExpiracaoAgendamento;
+	public void setTempoDuracaoEmprestimo(int tempoDuracaoAgendamento) {
+		this.tempoDuracaoEmprestimo = tempoDuracaoAgendamento;
+	}
+
+	public int getTempoExpiracaoReserva() {
+		return tempoExpiracaoReserva;
+	}
+	public void setTempoExpiracaoReserva(int tempoExpiracaoAgendamento) {
+		this.tempoExpiracaoReserva = tempoExpiracaoAgendamento;
 	}
 
 	public int getQuantidadeMaximaEmprestimos() {

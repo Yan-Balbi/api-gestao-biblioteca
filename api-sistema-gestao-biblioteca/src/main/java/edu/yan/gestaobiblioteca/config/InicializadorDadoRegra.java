@@ -19,8 +19,8 @@ public class InicializadorDadoRegra {
 				Regra regra = new Regra();
 				regra.setDuracaoSuspensaoUsuario(14);
 				regra.setQuantidadeMaximaEmprestimos(5);
-				regra.setTempoDuracaoAgendamento(14);
-				regra.setTempoExpiracaoAgendamento(3);
+				regra.setTempoDuracaoEmprestimo(14);
+				regra.setTempoExpiracaoReserva(3);
 				
 				regraRepositoy.save(regra);
 			}

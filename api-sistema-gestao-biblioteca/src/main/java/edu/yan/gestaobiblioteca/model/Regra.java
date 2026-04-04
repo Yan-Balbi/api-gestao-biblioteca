@@ -9,18 +9,18 @@ import jakarta.persistence.Id;
 @Entity
 public class Regra {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
 	private Long id;
 	
 	@Column(nullable = false, name = "duracao_suspensao_usuario")
 	private int duracaoSuspensaoUsuario;
 	
-	@Column(nullable = false, name = "tempo_duracao_agendamento")
-	private int tempoDuracaoAgendamento;
+	@Column(nullable = false, name = "tempo_duracao_emprestimo")
+	private int tempoDuracaoEmprestimo;
 	
-	@Column(nullable = false, name = "tempo_expiracao_agendamento")
-	private int tempoExpiracaoAgendamento;
+	@Column(nullable = false, name = "tempo_expiracao_reserva")
+	private int tempoExpiracaoReserva;
 	
 	@Column(nullable = false, name = "quantidade_maxima_emprestimos")
 	private int quantidadeMaximaEmprestimos;
@@ -39,18 +39,18 @@ public class Regra {
 		this.duracaoSuspensaoUsuario = duracaoSuspensao;
 	}
 
-	public int getTempoDuracaoAgendamento() {
-		return tempoDuracaoAgendamento;
+	public int getTempoDuracaoEmprestimo() {
+		return tempoDuracaoEmprestimo;
 	}
-	public void setTempoDuracaoAgendamento(int tempoDuracaoAgendamento) {
-		this.tempoDuracaoAgendamento = tempoDuracaoAgendamento;
+	public void setTempoDuracaoEmprestimo(int tempoDuracaoEmprestimo) {
+		this.tempoDuracaoEmprestimo = tempoDuracaoEmprestimo;
 	}
 	
-	public int getTempoExpiracaoAgendamento() {
-		return tempoExpiracaoAgendamento;
+	public int getTempoExpiracaoReserva() {
+		return tempoExpiracaoReserva;
 	}
-	public void setTempoExpiracaoAgendamento(int tempoExpiracaoAgendamento) {
-		this.tempoExpiracaoAgendamento = tempoExpiracaoAgendamento;
+	public void setTempoExpiracaoReserva(int tempoExpiracaoReserva) {
+		this.tempoExpiracaoReserva = tempoExpiracaoReserva;
 	}
 	
 	public int getQuantidadeMaximaEmprestimos() {

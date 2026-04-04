@@ -11,7 +11,7 @@ import edu.yan.gestaobiblioteca.exception.regra.DuracaoSuspensaoDeUsuarioInvalid
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontrada;
-import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoDeAgendamentoInvalidaException;
+import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoReservaInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDuracaoEmprestimoInvalidaException;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfInvalidoException;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
@@ -95,7 +95,7 @@ public class GlobalExceptionHandler {
 	    RegraNaoEncontrada.class,
 	    DuracaoSuspensaoDeUsuarioInvalidaException.class,
 	    QuantidadeMaximaEmprestimosInvalidaException.class,
-	    TempoDeExpiracaoDeAgendamentoInvalidaException.class,
+	    TempoDeExpiracaoReservaInvalidaException.class,
 	    TempoDuracaoEmprestimoInvalidaException.class
 	})
     public ProblemDetail handleRegraException(Exception exception) {
@@ -115,10 +115,10 @@ public class GlobalExceptionHandler {
 		    detalheErro.setTitle("Quantidade Máx. Emprestimos inválida.");
 		}
 		
-		if (exception instanceof TempoDeExpiracaoDeAgendamentoInvalidaException) {
+		if (exception instanceof TempoDeExpiracaoReservaInvalidaException) {
 		    detalheErro = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
 		    detalheErro.setDetail(exception.getMessage());
-		    detalheErro.setTitle("Tempo de Expiração de Empréstimos inválida.");
+		    detalheErro.setTitle("Tempo de Expiração de Reservas inválida.");
 		}
 		
 		if (exception instanceof TempoDuracaoEmprestimoInvalidaException) {

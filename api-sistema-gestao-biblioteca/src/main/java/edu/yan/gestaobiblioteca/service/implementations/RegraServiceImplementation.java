@@ -7,7 +7,7 @@ import edu.yan.gestaobiblioteca.exception.regra.DuracaoSuspensaoDeUsuarioInvalid
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontrada;
-import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoDeAgendamentoInvalidaException;
+import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoReservaInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDuracaoEmprestimoInvalidaException;
 import edu.yan.gestaobiblioteca.model.Regra;
 import edu.yan.gestaobiblioteca.respository.RegraRepository;
@@ -31,11 +31,11 @@ public class RegraServiceImplementation implements IRegraService{
 		if(regra.getDuracaoSuspensaoUsuario() <= 0) {
 			throw new DuracaoSuspensaoDeUsuarioInvalidaException("Valor da duração de suspensão inválido.");
 		}
-		if(regra.getTempoDuracaoAgendamento() <= 0 ) {
+		if(regra.getTempoDuracaoEmprestimo() <= 0 ) {
 			throw new TempoDuracaoEmprestimoInvalidaException("Valor de tempo de duração do empréstimo inválido.");
 		}
-		if(regra.getTempoExpiracaoAgendamento() <= 0) {
-			throw new TempoDeExpiracaoDeAgendamentoInvalidaException("Valor do tempo de expiração inválido.");
+		if(regra.getTempoExpiracaoReserva() <= 0) {
+			throw new TempoDeExpiracaoReservaInvalidaException("Valor do tempo de expiração inválido.");
 		}
 		if(regra.getQuantidadeMaximaEmprestimos() <= 0) {
 			throw new QuantidadeMaximaEmprestimosInvalidaException("Valor de quantidade max de emprétismos inválido.");
@@ -47,28 +47,28 @@ public class RegraServiceImplementation implements IRegraService{
 	@Override
 	@Transactional
 	public Regra atualizar(Long id, RegraUpdateDto regraUpdateDto) {
-		System.out.println("DuracaoSuspensaoDeUsuarioInvalidaException - "+regraUpdateDto.getDuracaoSuspensao());
+		System.out.println("DuracaoSuspensaoDeUsuarioInvalidaException - "+regraUpdateDto.getDuracaoSuspensaoUsuario());
 		if(regraRepository.findById(id).isEmpty()) {
-			throw new RegraNaoEncontrada("Regrão não encontrada");
+			throw new RegraNaoEncontrada("Regra não encontrada");
 		}
-		if(regraUpdateDto.getDuracaoSuspensao() <= 0) {
-			throw new DuracaoSuspensaoDeUsuarioInvalidaException("Valor da duração de suspensão inválido.");
+		if(regraUpdateDto.getDuracaoSuspensaoUsuario() <= 0) {
+			throw new DuracaoSuspensaoDeUsuarioInvalidaException("Valor '"+regraUpdateDto.getDuracaoSuspensaoUsuario()+"' da duração de suspensão inválido.");
 		}
-		if(regraUpdateDto.getTempoDuracaoAgendamento() <= 0 ) {
-			throw new TempoDuracaoEmprestimoInvalidaException("Valor de tempo de duração do empréstimo inválido.");
+		if(regraUpdateDto.getTempoDuracaoEmprestimo() <= 0 ) {
+			throw new TempoDuracaoEmprestimoInvalidaException("Valor '"+regraUpdateDto.getTempoDuracaoEmprestimo()+"' de tempo de duração do empréstimo inválido.");
 		}
-		if(regraUpdateDto.getTempoExpiracaoAgendamento() <= 0) {
-			throw new TempoDeExpiracaoDeAgendamentoInvalidaException("Valor do tempo de expiração inválido.");
+		if(regraUpdateDto.getTempoExpiracaoReserva() <= 0) {
+			throw new TempoDeExpiracaoReservaInvalidaException("Valor '"+regraUpdateDto.getTempoExpiracaoReserva()+"' do tempo de expiração de reservas inválido.");
 		}
 		if(regraUpdateDto.getQuantidadeMaximaEmprestimos() <= 0) {
-			throw new QuantidadeMaximaEmprestimosInvalidaException("Valor de quantidade max de emprétismos inválido.");
+			throw new QuantidadeMaximaEmprestimosInvalidaException("Valor '"+regraUpdateDto.getQuantidadeMaximaEmprestimos()+"' de quantidade max de emprétismos inválido.");
 		}
 		
 		Regra regraBd = regraRepository.findRegraById(id).orElseThrow(() -> new RuntimeException());
 		regraBd.setQuantidadeMaximaEmprestimos(regraUpdateDto.getQuantidadeMaximaEmprestimos());
-		regraBd.setDuracaoSuspensaoUsuario(regraUpdateDto.getDuracaoSuspensao());
-		regraBd.setTempoDuracaoAgendamento(regraUpdateDto.getTempoDuracaoAgendamento());
-		regraBd.setTempoExpiracaoAgendamento(regraUpdateDto.getTempoExpiracaoAgendamento());
+		regraBd.setDuracaoSuspensaoUsuario(regraUpdateDto.getDuracaoSuspensaoUsuario());
+		regraBd.setTempoDuracaoEmprestimo(regraUpdateDto.getTempoDuracaoEmprestimo());
+		regraBd.setTempoExpiracaoReserva(regraUpdateDto.getTempoExpiracaoReserva());
 		return regraBd;
 	}
 }

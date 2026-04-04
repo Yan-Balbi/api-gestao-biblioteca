@@ -9,6 +9,6 @@ CREATE TABLE suspensao (
     
     CONSTRAINT fk_suspensao_usuario
     	FOREIGN KEY (usuario_id)
-    	REFERENES usuario_model(i)
+    	REFERENCES usuario(id)
     	ON DELETE CASCADE
 );
