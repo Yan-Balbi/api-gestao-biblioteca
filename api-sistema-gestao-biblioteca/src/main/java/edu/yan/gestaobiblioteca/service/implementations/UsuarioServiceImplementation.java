@@ -117,7 +117,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	@Override
 	public Iterable<Usuario> buscarTodosBibliotecarios() {
 		
-		return usuarioRepository.findTodosBibliotecarios();
+		return usuarioRepository.findTodosBibliotecariosAtivos();
 	}
 
 /*	@Override
@@ -140,7 +140,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	@Override
 	public Iterable<Usuario> buscarTodosClientes() {
 
-		return usuarioRepository.findTodosClientes();
+		return usuarioRepository.findTodosClientesAtivos();
 	}
 
 }

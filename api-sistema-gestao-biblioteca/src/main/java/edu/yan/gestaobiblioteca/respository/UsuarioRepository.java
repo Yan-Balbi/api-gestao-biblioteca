@@ -72,11 +72,15 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	
 	/*================== Buscas gerais ==================*/
 	@Query("SELECT u FROM Usuario u WHERE u.papel = 'ROLE_ADMIN' AND u.deletedAt IS NULL")
-	Iterable<Usuario> findTodosAdmins();
+	Iterable<Usuario> findTodosAdminsAtivos();
 	
 	@Query("SELECT u FROM Usuario u WHERE u.papel = 'ROLE_BIBLIOTECARIO' AND u.deletedAt IS NULL")
-	Iterable<Usuario> findTodosBibliotecarios();
+	Iterable<Usuario> findTodosBibliotecariosAtivos();
 
 	@Query("SELECT u FROM Usuario u WHERE u.papel = 'ROLE_CLIENTE' AND u.deletedAt IS NULL")
-	Iterable<Usuario> findTodosClientes();
+	Iterable<Usuario> findTodosClientesAtivos();
+	
+	//TODO:IMPLEMENTAR DEPOIS DE CRIAR OS EMPRESTIMOS
+	//@Query("SELECT u FROM Usuario u JOIN emprestimo e ON u.id = e.usuario_id WHERE u.papel = 'ROLE_CLIENTE' AND u.deletedAt IS NULL AND NOW <= e.")
+	//Iterable<Usuario> findTodosUsuariosAtivosComEmprestimoAtrasado();
 }
