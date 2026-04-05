@@ -6,7 +6,7 @@ import edu.yan.gestaobiblioteca.dto.regra.RegraUpdateDto;
 import edu.yan.gestaobiblioteca.exception.regra.DuracaoSuspensaoDeUsuarioInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
-import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontrada;
+import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontradaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoReservaInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDuracaoEmprestimoInvalidaException;
 import edu.yan.gestaobiblioteca.model.Regra;
@@ -49,7 +49,7 @@ public class RegraServiceImplementation implements IRegraService{
 	public Regra atualizar(Long id, RegraUpdateDto regraUpdateDto) {
 		System.out.println("DuracaoSuspensaoDeUsuarioInvalidaException - "+regraUpdateDto.getDuracaoSuspensaoUsuario());
 		if(regraRepository.findById(id).isEmpty()) {
-			throw new RegraNaoEncontrada("Regra não encontrada");
+			throw new RegraNaoEncontradaException("Regra não encontrada");
 		}
 		if(regraUpdateDto.getDuracaoSuspensaoUsuario() <= 0) {
 			throw new DuracaoSuspensaoDeUsuarioInvalidaException("Valor '"+regraUpdateDto.getDuracaoSuspensaoUsuario()+"' da duração de suspensão inválido.");

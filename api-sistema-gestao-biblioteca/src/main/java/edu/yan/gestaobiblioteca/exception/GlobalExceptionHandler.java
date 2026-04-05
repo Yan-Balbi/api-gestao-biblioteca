@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import edu.yan.gestaobiblioteca.exception.regra.DuracaoSuspensaoDeUsuarioInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
-import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontrada;
+import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontradaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoReservaInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDuracaoEmprestimoInvalidaException;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfInvalidoException;
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
     }
 	@ExceptionHandler({
 	    RegraJaInseridaException.class,
-	    RegraNaoEncontrada.class,
+	    RegraNaoEncontradaException.class,
 	    DuracaoSuspensaoDeUsuarioInvalidaException.class,
 	    QuantidadeMaximaEmprestimosInvalidaException.class,
 	    TempoDeExpiracaoReservaInvalidaException.class,
@@ -107,6 +107,12 @@ public class GlobalExceptionHandler {
 		    detalheErro = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
 		    detalheErro.setDetail(exception.getMessage());
 		    detalheErro.setTitle("Duração Suspensão inválida.");
+		}
+		
+		if (exception instanceof RegraNaoEncontradaException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Regra não encontrada.");
 		}
 		
 		if (exception instanceof QuantidadeMaximaEmprestimosInvalidaException) {

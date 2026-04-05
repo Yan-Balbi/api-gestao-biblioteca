@@ -3,14 +3,18 @@ package edu.yan.gestaobiblioteca.service;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.yan.gestaobiblioteca.dto.regra.RegraUpdateDto;
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
+import edu.yan.gestaobiblioteca.exception.regra.RegraNaoEncontradaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDeExpiracaoReservaInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.TempoDuracaoEmprestimoInvalidaException;
 import edu.yan.gestaobiblioteca.model.Regra;
@@ -27,6 +31,22 @@ public class RegraServiceImplementationTest {
 	@BeforeEach
 	void setup() {
 		MockitoAnnotations.openMocks(this);
+	}
+	
+	@Test
+	void deveLancarExcecaoSeNaoEncontrarRegraInserida() {
+		RegraUpdateDto regra = new RegraUpdateDto();
+		regra.setDuracaoSuspensaoUsuario(14);
+		regra.setQuantidadeMaximaEmprestimos(5);
+		regra.setTempoDuracaoEmprestimo(14);
+		regra.setTempoExpiracaoReserva(3);
+		
+		when(regraRepository.findById((long) 1))
+        .thenReturn(Optional.empty());
+		
+		assertThrows(RegraNaoEncontradaException.class, () -> {
+			regraServiceImplementation.atualizar((long) 1, regra);
+		});
 	}
 	
 	@Test
