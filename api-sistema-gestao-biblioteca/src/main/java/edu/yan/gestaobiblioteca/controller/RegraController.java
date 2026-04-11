@@ -25,7 +25,6 @@ public class RegraController {
 	
 	@PutMapping("/atualizar/{regraId}")
 	public ResponseEntity<Regra> atualizarRegra(@PathVariable Long regraId, @RequestBody RegraUpdateDto regraUpdateDto) {
-		System.out.println("entrou");
 		Regra regra = regraServiceImplementation.atualizar(regraId, regraUpdateDto);
 		return ResponseEntity.ok(regra);
 	}
