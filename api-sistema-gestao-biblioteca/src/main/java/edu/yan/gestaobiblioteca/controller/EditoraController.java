@@ -17,6 +17,7 @@ import edu.yan.gestaobiblioteca.dto.editora.EditoraInsertDto;
 import edu.yan.gestaobiblioteca.dto.editora.EditoraUpdateDto;
 import edu.yan.gestaobiblioteca.model.Editora;
 import edu.yan.gestaobiblioteca.service.implementations.EditoraServiceImplementation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("editora")
@@ -28,7 +29,7 @@ public class EditoraController {
 	}
 	
 	@PostMapping("/inserir")
-	public ResponseEntity<Editora> inserir(@RequestBody EditoraInsertDto editoraInsertDto) {
+	public ResponseEntity<Editora> inserir(@RequestBody @Valid EditoraInsertDto editoraInsertDto) {
 		Editora editora = editoraService.inserir(editoraInsertDto);
 		URI local = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(editora.getId()).toUri();
 		return ResponseEntity.created(local).body(editora);

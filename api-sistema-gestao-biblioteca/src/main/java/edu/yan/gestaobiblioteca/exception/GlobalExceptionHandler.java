@@ -4,9 +4,15 @@ package edu.yan.gestaobiblioteca.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import edu.yan.gestaobiblioteca.exception.Editora.CampoEditoraInvalidoExcepiton;
+import edu.yan.gestaobiblioteca.exception.Editora.EditoraInativaNaoPodeSerEditadaException;
+import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaAtivaException;
+import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaInativaException;
+import edu.yan.gestaobiblioteca.exception.Editora.EditoraNaoEncontradaException;
 import edu.yan.gestaobiblioteca.exception.regra.DuracaoSuspensaoDeUsuarioInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
@@ -134,5 +140,66 @@ public class GlobalExceptionHandler {
 		}
 		
 		return detalheErro;
+	}
+	
+	@ExceptionHandler({
+		CampoEditoraInvalidoExcepiton.class,
+		EditoraInativaNaoPodeSerEditadaException.class,
+		EditoraJaAtivaException.class,
+		EditoraJaInativaException.class,
+		EditoraNaoEncontradaException.class
+	})
+    public ProblemDetail handleEditoraException(Exception exception) {
+		ProblemDetail detalheErro = null;
+		
+		if (exception instanceof CampoEditoraInvalidoExcepiton) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Campo nome inválido.");
+		}
+		
+		if (exception instanceof EditoraInativaNaoPodeSerEditadaException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Editora inativa.");
+		}
+		
+		if (exception instanceof EditoraJaInativaException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Editora já esta inativa.");
+		}
+
+		if (exception instanceof EditoraJaAtivaException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Editora já esta ativa.");
+		}
+		
+		if (exception instanceof EditoraNaoEncontradaException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Editora não encontrada.");
+		}
+		
+		exception.printStackTrace();
+		return detalheErro;
+    }
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
+
+	    String erro = ex.getBindingResult()
+	            .getFieldErrors()
+	            .stream()
+	            .map(e -> e.getField() + ": " + e.getDefaultMessage())
+	            .findFirst()
+	            .orElse("Erro de validação");
+
+	    ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+	    pd.setTitle("Erro de validação");
+	    pd.setDetail(erro);
+
+	    return pd;
 	}
 }

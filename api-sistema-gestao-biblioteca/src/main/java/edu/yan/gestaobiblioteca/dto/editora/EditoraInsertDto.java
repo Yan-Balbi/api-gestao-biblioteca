@@ -2,7 +2,10 @@ package edu.yan.gestaobiblioteca.dto.editora;
 
 import java.util.Date;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class EditoraInsertDto {
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 	private String descricao;
 	private Date dataCricacao;
