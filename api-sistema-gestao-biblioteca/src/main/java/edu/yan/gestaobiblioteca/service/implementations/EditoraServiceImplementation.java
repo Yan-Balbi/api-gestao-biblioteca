@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.editora.EditoraInsertDto;
 import edu.yan.gestaobiblioteca.dto.editora.EditoraUpdateDto;
+import edu.yan.gestaobiblioteca.exception.Editora.CampoEditoraInvalidoExcepiton;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraInativaNaoPodeSerEditadaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaAtivaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaInativaException;
@@ -24,8 +25,11 @@ public class EditoraServiceImplementation implements IEditoraService{
 	
 	@Override
 	public Editora inserir(EditoraInsertDto editoraInsertDto) {
+		if(editoraInsertDto.getNome().isEmpty()) {
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora é obrigatório");
+		}
 		//podem existir editoras com o mesmo nome		  
-
+		
 		Editora editoraBd = new Editora();
 		editoraBd.setDescricao(editoraInsertDto.getDescricao());
 		editoraBd.setNome(editoraInsertDto.getNome());
