@@ -21,7 +21,7 @@ public class Editora {
 	@Column(updatable = true)
 	private String nome;
 	
-	@Column(updatable = true, name="data_cricacao", nullable = true)
+	@Column(updatable = true, name="data_criacao", nullable = true)
 	private Date dataCricacao;
 	
 	/*

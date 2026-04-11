@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,7 +28,7 @@ public class EditoraController {
 	}
 	
 	@PostMapping("/inserir")
-	public ResponseEntity<Editora> inserir(EditoraInsertDto editoraInsertDto) {
+	public ResponseEntity<Editora> inserir(@RequestBody EditoraInsertDto editoraInsertDto) {
 		Editora editora = editoraService.inserir(editoraInsertDto);
 		URI local = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(editora.getId()).toUri();
 		return ResponseEntity.created(local).body(editora);
