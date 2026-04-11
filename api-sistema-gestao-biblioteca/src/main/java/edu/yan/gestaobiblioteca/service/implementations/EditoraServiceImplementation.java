@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.editora.EditoraInsertDto;
 import edu.yan.gestaobiblioteca.dto.editora.EditoraUpdateDto;
+import edu.yan.gestaobiblioteca.exception.Editora.EditoraInativaNaoPodeSerEditadaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaAtivaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaInativaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraNaoEncontradaException;
@@ -37,7 +38,7 @@ public class EditoraServiceImplementation implements IEditoraService{
 	public Editora atualizar(Long id, EditoraUpdateDto editoraUpdateDto) {
 		//editora inativas são editoras equivalente a editoras excluidas, logo, não podem ser editadas
 		if(!editoraRepository.estaAtiva(id)) {
-//			throw new EditoraInativaExceptiopn();
+			throw new EditoraInativaNaoPodeSerEditadaException("Falha ao editar: A editora de id '"+id+"' está inativa.");
 		}
 		Editora editoraBd = editoraRepository.findById(id).orElseThrow(() -> new EditoraNaoEncontradaException("Editora de id '"+id+"' não encontrada"));
 		editoraBd.setDescricao(editoraUpdateDto.getDescricao());
