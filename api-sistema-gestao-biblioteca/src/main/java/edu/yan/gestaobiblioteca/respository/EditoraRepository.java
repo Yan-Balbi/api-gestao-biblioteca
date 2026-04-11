@@ -10,14 +10,12 @@ import edu.yan.gestaobiblioteca.model.Editora;
 
 public interface EditoraRepository extends CrudRepository<Editora, Long> {
 	
-	@Query("SELECT e FROM editora e WHERE e.insi = :insiInserido AND e.ativo = true")
-	Optional<Editora> findEditoraByInsi(@Param("insiInserido") String insi);
-	
-	@Query("SELECT e FROM editora e WHERE e.nome LIKE %:nomeInserido% AND e.ativo = true")
+	@Query("SELECT e FROM Editora e WHERE e.nome LIKE %:nomeInserido% AND e.ativo = true")
 	Iterable<Editora> findEditoraByNome(@Param("nomeInserido") String nome);
 	
-	Optional<Editora> findEditoraById();
+	@Query("SELECT e FROM Editora e WHERE e.id = :editoraId AND e.ativo = true")
+	Optional<Editora> findEditoraAtivaById(@Param("editoraId") Long id);
 
-	@Query("SELECT e.ativa FROM editora e WHERE e.id = :editoraId")
+	@Query("SELECT e.ativo FROM Editora e WHERE e.id = :editoraId")
 	boolean estaAtiva(@Param("editoraId") Long id);
 }

@@ -21,8 +21,15 @@ public class Editora {
 	@Column(updatable = true)
 	private String nome;
 	
-	@Column(updatable = true, length = 16)
-	private String insi;
+	@Column(updatable = true, name="data_cricacao", nullable = true)
+	private Date dataCricacao;
+	
+	/*
+	 * TODO: futuramente, criar uma tabela estado e colocar a FK dele aqui
+	 */
+	
+	@Column(updatable = true)
+	private String descricao;
 	
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -49,11 +56,18 @@ public class Editora {
 		this.nome = nome;
 	}
 	
-	public String getInsi() {
-		return insi;
+	public Date getDataCricacao() {
+		return dataCricacao;
 	}
-	public void setInsi(String insi) {
-		this.insi = insi;
+	public void setDataCricacao(Date dataCricacao) {
+		this.dataCricacao = dataCricacao;
+	}
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 	public Date getCreatedAt() {

@@ -1,16 +1,18 @@
 package edu.yan.gestaobiblioteca.service.implementations;
 
+import org.springframework.stereotype.Service;
+
 import edu.yan.gestaobiblioteca.dto.editora.EditoraInsertDto;
 import edu.yan.gestaobiblioteca.dto.editora.EditoraUpdateDto;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaAtivaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaInativaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraNaoEncontradaException;
-import edu.yan.gestaobiblioteca.exception.Editora.InsiEmUsoException;
 import edu.yan.gestaobiblioteca.model.Editora;
 import edu.yan.gestaobiblioteca.respository.EditoraRepository;
 import edu.yan.gestaobiblioteca.service.interfaces.IEditoraService;
 import jakarta.transaction.Transactional;
 
+@Service
 public class EditoraServiceImplementation implements IEditoraService{
 
 	EditoraRepository editoraRepository;
@@ -22,21 +24,25 @@ public class EditoraServiceImplementation implements IEditoraService{
 	@Override
 	public Editora inserir(EditoraInsertDto editoraInsertDto) {
 		//podem existir editoras com o mesmo nome		  
-		if( !editoraRepository.findEditoraByInsi(editoraInsertDto.getInsi()).isEmpty() ) {
-			throw new InsiEmUsoException("O insi inserido '"+editoraInsertDto.getInsi()+"' já está em uso");
-		}
+
 		Editora editoraBd = new Editora();
-		editoraBd.setInsi(editoraInsertDto.getInsi());
+		editoraBd.setDescricao(editoraInsertDto.getDescricao());
 		editoraBd.setNome(editoraInsertDto.getNome());
+		editoraBd.setDataCricacao(editoraInsertDto.getDataCricacao());
 		return editoraRepository.save(editoraBd); //retornar editora inserir
 	}
 
 	@Override
 	@Transactional
 	public Editora atualizar(Long id, EditoraUpdateDto editoraUpdateDto) {
+		//editora inativas são editoras equivalente a editoras excluidas, logo, não podem ser editadas
+		if(!editoraRepository.estaAtiva(id)) {
+//			throw new EditoraInativaExceptiopn();
+		}
 		Editora editoraBd = editoraRepository.findById(id).orElseThrow(() -> new EditoraNaoEncontradaException("Editora de id '"+id+"' não encontrada"));
-		editoraBd.setInsi(editoraUpdateDto.getInsi());
+		editoraBd.setDescricao(editoraUpdateDto.getDescricao());
 		editoraBd.setNome(editoraUpdateDto.getNome());
+		editoraBd.setDataCricacao(editoraUpdateDto.getDataCricacao());
 		return editoraRepository.save(editoraBd);
 	}
 

@@ -1,8 +1,11 @@
 package edu.yan.gestaobiblioteca.dto.editora;
 
+import java.util.Date;
+
 public class EditoraInsertDto {
 	private String nome;
-	private String insi;
+	private String descricao;
+	private Date dataCricacao;
 	
 	public String getNome() {
 		return nome;
@@ -11,10 +14,17 @@ public class EditoraInsertDto {
 		this.nome = nome;
 	}
 	
-	public String getInsi() {
-		return insi;
+	public String getDescricao() {
+		return descricao;
 	}
-	public void setInsi(String insi) {
-		this.insi = insi;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+	public Date getDataCricacao() {
+		return dataCricacao;
+	}
+	public void setDataCricacao(Date dataCricacao) {
+		this.dataCricacao = dataCricacao;
 	}
 }
