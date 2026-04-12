@@ -1,0 +1,15 @@
+CREATE TABLE editora (
+  id BIGSERIAL PRIMARY KEY,
+  
+  nome VARCHAR(100),
+  
+  data_criacao TIMESTAMP NULL,
+  
+  descricao TEXT,
+  
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  
+  updated_at TIMESTAMP NULL
+)
