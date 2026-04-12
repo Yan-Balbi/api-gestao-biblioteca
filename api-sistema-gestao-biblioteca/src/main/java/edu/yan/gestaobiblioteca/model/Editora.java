@@ -22,7 +22,7 @@ public class Editora {
 	private String nome;
 	
 	@Column(updatable = true, name="data_criacao", nullable = true)
-	private Date dataCricacao;
+	private Date dataCriacao;
 	
 	/*
 	 * TODO: futuramente, criar uma tabela estado e colocar a FK dele aqui
@@ -56,11 +56,11 @@ public class Editora {
 		this.nome = nome;
 	}
 	
-	public Date getDataCricacao() {
-		return dataCricacao;
+	public Date getDataCriacao() {
+		return dataCriacao;
 	}
-	public void setDataCricacao(Date dataCricacao) {
-		this.dataCricacao = dataCricacao;
+	public void setDataCriacao(Date dataCricacao) {
+		this.dataCriacao = dataCricacao;
 	}
 	
 	public String getDescricao() {

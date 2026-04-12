@@ -39,7 +39,7 @@ public class EditoraServiceImplementation implements IEditoraService{
 		Editora editoraBd = new Editora();
 		editoraBd.setDescricao(editoraInsertDto.getDescricao());
 		editoraBd.setNome(editoraInsertDto.getNome());
-		editoraBd.setDataCricacao(editoraInsertDto.getDataCricacao());
+		editoraBd.setDataCriacao(editoraInsertDto.getDataCriacao());
 		return editoraRepository.save(editoraBd); //retornar editora inserir
 	}
 
@@ -53,7 +53,7 @@ public class EditoraServiceImplementation implements IEditoraService{
 		Editora editoraBd = editoraRepository.findById(id).orElseThrow(() -> new EditoraNaoEncontradaException("Editora de id '"+id+"' não encontrada"));
 		editoraBd.setDescricao(editoraUpdateDto.getDescricao());
 		editoraBd.setNome(editoraUpdateDto.getNome());
-		editoraBd.setDataCricacao(editoraUpdateDto.getDataCricacao());
+		editoraBd.setDataCriacao(editoraUpdateDto.getDataCriacao());
 		return editoraRepository.save(editoraBd);
 	}
 

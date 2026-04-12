@@ -36,7 +36,7 @@ public class EditoraController {
 	}
 	
 	@PutMapping("/{id}/atualizar")
-	public ResponseEntity<Editora> atualizar(@PathVariable Long id, @RequestBody EditoraUpdateDto editoraUpdateDto) {
+	public ResponseEntity<Editora> atualizar(@PathVariable Long id, @RequestBody @Valid EditoraUpdateDto editoraUpdateDto) {
 		Editora editora = editoraService.atualizar(id, editoraUpdateDto);
 		return ResponseEntity.ok(editora);
 	}
