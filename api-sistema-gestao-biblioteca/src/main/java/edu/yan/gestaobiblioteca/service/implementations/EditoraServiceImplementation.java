@@ -46,11 +46,21 @@ public class EditoraServiceImplementation implements IEditoraService{
 	@Override
 	@Transactional
 	public Editora atualizar(Long id, EditoraUpdateDto editoraUpdateDto) {
+		if(editoraUpdateDto.getNome().isEmpty()) {
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora é obrigatório.");
+		}
+		if(editoraUpdateDto.getNome().length() < 5) {
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora deve ter no mímimo 5 caracteres.");
+		}
+		if(editoraUpdateDto.getNome().length() > 100) {
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora deve ter no máximo 100 caracteres.");
+		}
+		Editora editoraBd = editoraRepository.findById(id).orElseThrow(() -> new EditoraNaoEncontradaException("Editora de id '"+id+"' não encontrada"));
 		//editora inativas são editoras equivalente a editoras excluidas, logo, não podem ser editadas
 		if(!editoraRepository.estaAtiva(id)) {
 			throw new EditoraInativaNaoPodeSerEditadaException("Falha ao editar: A editora de id '"+id+"' está inativa.");
 		}
-		Editora editoraBd = editoraRepository.findById(id).orElseThrow(() -> new EditoraNaoEncontradaException("Editora de id '"+id+"' não encontrada"));
+		
 		editoraBd.setDescricao(editoraUpdateDto.getDescricao());
 		editoraBd.setNome(editoraUpdateDto.getNome());
 		editoraBd.setDataCriacao(editoraUpdateDto.getDataCriacao());
