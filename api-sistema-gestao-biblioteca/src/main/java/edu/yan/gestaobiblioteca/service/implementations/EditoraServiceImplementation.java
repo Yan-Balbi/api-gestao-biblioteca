@@ -26,7 +26,13 @@ public class EditoraServiceImplementation implements IEditoraService{
 	@Override
 	public Editora inserir(EditoraInsertDto editoraInsertDto) {
 		if(editoraInsertDto.getNome().isEmpty()) {
-			throw new CampoEditoraInvalidoExcepiton("Nome da editora é obrigatório");
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora é obrigatório.");
+		}
+		if(editoraInsertDto.getNome().length() < 5) {
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora deve ter no mímimo 5 caracteres.");
+		}
+		if(editoraInsertDto.getNome().length() > 100) {
+			throw new CampoEditoraInvalidoExcepiton("Nome da editora deve ter no máximo 100 caracteres.");
 		}
 		//podem existir editoras com o mesmo nome		  
 		
@@ -75,7 +81,7 @@ public class EditoraServiceImplementation implements IEditoraService{
 		if(editoraRepository.estaAtiva(id)) {
 			throw new EditoraJaAtivaException("A editora de id '"+id+"' já está ativa");
 		}
-		editoraBd.setAtivo(false);
+		editoraBd.setAtivo(true);
 		editoraRepository.save(editoraBd);
 	}
 
