@@ -46,10 +46,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		assertThrows(CampoEditoraInvalidoExcepiton.class, () -> {
 			editoraService.inserir(editora);
@@ -63,10 +60,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("abc");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		assertThrows(CampoEditoraInvalidoExcepiton.class, () -> {
 			editoraService.inserir(editora);
@@ -80,10 +74,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		assertThrows(CampoEditoraInvalidoExcepiton.class, () -> {
 			editoraService.inserir(editora);
@@ -99,10 +90,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("Editora ABC");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		when(editoraRepository.findById(id)).thenReturn(Optional.empty());
 		
@@ -118,10 +106,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("abc");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		assertThrows(CampoEditoraInvalidoExcepiton.class, ()->{
 			editoraService.atualizar(id, editora);
@@ -135,10 +120,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		assertThrows(CampoEditoraInvalidoExcepiton.class, ()->{
 			editoraService.atualizar(id, editora);
@@ -152,10 +134,7 @@ public class EditoraServiceImplementationTest {
 		editora.setNome("");
 		editora.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		assertThrows(CampoEditoraInvalidoExcepiton.class, ()->{
 			editoraService.atualizar(id, editora);
@@ -169,16 +148,13 @@ public class EditoraServiceImplementationTest {
 		editoraUpdateDto.setNome("Editora ABC");
 		editoraUpdateDto.setDescricao("texto de descrição da editora.");
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
-		editoraUpdateDto.setDataCriacao(date);
+		editoraUpdateDto.setDataCriacao(dataCriacao);
 		
 		Editora editora = new Editora();
 		editora.setId(id);
 		editora.setNome("Editora ABC");
 		editora.setDescricao("texto de descricao da editora.");
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		when(editoraRepository.findById(id)).thenReturn(Optional.of(editora));
 		when(editoraRepository.estaAtiva(id)).thenReturn(false);
@@ -194,13 +170,10 @@ public class EditoraServiceImplementationTest {
 		Editora editora = new Editora();
 		Long id = (long) 1;
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
 		editora.setId(id);
 		editora.setNome("Editora ABC");
 		editora.setDescricao("Texto de descrição da editora.");
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		when(editoraRepository.findById(id)).thenReturn(Optional.empty());
 		
@@ -214,13 +187,10 @@ public class EditoraServiceImplementationTest {
 		Editora editora = new Editora();
 		Long id = (long) 1;
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
 		editora.setId(id);
 		editora.setNome("Editora ABC");
 		editora.setDescricao("Texto de descrição da editora.");
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		when(editoraRepository.findById(id)).thenReturn(Optional.of(editora));
 		when(editoraRepository.estaAtiva(id)).thenReturn(false);
@@ -236,13 +206,10 @@ public class EditoraServiceImplementationTest {
 		Editora editora = new Editora();
 		Long id = (long) 1;
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
 		editora.setId(id);
 		editora.setNome("Editora ABC");
 		editora.setDescricao("Texto de descrição da editora.");
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		when(editoraRepository.findById(id)).thenReturn(Optional.empty());
 		
@@ -256,13 +223,10 @@ public class EditoraServiceImplementationTest {
 		Editora editora = new Editora();
 		Long id = (long) 1;
 		LocalDate dataCriacao = LocalDate.of(2000, 1, 1);
-		Date date = Date.from(
-				dataCriacao.atStartOfDay(ZoneId.systemDefault()).toInstant()
-		);
 		editora.setId(id);
 		editora.setNome("Editora ABC");
 		editora.setDescricao("Texto de descrição da editora.");
-		editora.setDataCriacao(date);
+		editora.setDataCriacao(dataCriacao);
 		
 		when(editoraRepository.findById(id)).thenReturn(Optional.of(editora));
 		when(editoraRepository.estaAtiva(id)).thenReturn(true);

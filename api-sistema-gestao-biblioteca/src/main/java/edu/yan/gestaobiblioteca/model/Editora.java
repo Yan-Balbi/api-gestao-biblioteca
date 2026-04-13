@@ -1,6 +1,6 @@
 package edu.yan.gestaobiblioteca.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -22,7 +22,7 @@ public class Editora {
 	private String nome;
 	
 	@Column(updatable = true, name="data_criacao", nullable = true)
-	private Date dataCriacao;
+	private LocalDate dataCriacao;
 	
 	/*
 	 * TODO: futuramente, criar uma tabela estado e colocar a FK dele aqui
@@ -33,14 +33,14 @@ public class Editora {
 	
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @Column()
     private boolean ativo = true;
     
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = true)
-    private Date updatedAt = null;
+    private LocalDate updatedAt = null;
 
 	public Long getId() {
 		return id;
@@ -56,10 +56,10 @@ public class Editora {
 		this.nome = nome;
 	}
 	
-	public Date getDataCriacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
-	public void setDataCriacao(Date dataCricacao) {
+	public void setDataCriacao(LocalDate dataCricacao) {
 		this.dataCriacao = dataCricacao;
 	}
 	
@@ -70,10 +70,10 @@ public class Editora {
 		this.descricao = descricao;
 	}
 	
-	public Date getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
 	
@@ -84,10 +84,10 @@ public class Editora {
 		this.ativo = ativo;
 	}
 	
-	public Date getUpdatedAt() {
+	public LocalDate getUpdatedAt() {
 		return updatedAt;
 	}
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(LocalDate updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 }

@@ -1,7 +1,7 @@
 package edu.yan.gestaobiblioteca.service.implementations;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,7 +94,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	@Transactional
 	public void deletarUsuario(Long id) {
 		Usuario usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Usuario de id '"+id+"' não encotrado"));
-		usuarioBd.setDeletedAt(new Date());
+		usuarioBd.setDeletedAt(LocalDate.now());
 	}
 
 /*	@Override

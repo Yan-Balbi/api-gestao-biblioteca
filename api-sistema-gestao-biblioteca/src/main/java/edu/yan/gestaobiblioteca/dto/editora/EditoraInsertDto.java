@@ -1,6 +1,6 @@
 package edu.yan.gestaobiblioteca.dto.editora;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ public class EditoraInsertDto {
 	@NotBlank(message = "Campo 'descricao' faltando no payload")
 	private String descricao;
 	@NotNull(message = "Campo 'dataCriacao' faltando no payload")
-	private Date dataCriacao;
+	private LocalDate dataCriacao;
 	
 	public String getNome() {
 		return nome;
@@ -27,10 +27,10 @@ public class EditoraInsertDto {
 		this.descricao = descricao;
 	}
 	
-	public Date getDataCriacao() {
+	public LocalDate getDataCriacao() {
 		return dataCriacao;
 	}
-	public void setDataCriacao(Date dataCricacao) {
+	public void setDataCriacao(LocalDate dataCricacao) {
 		this.dataCriacao = dataCricacao;
 	}
 }

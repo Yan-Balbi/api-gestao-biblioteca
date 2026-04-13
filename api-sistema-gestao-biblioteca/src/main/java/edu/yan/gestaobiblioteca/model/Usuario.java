@@ -1,7 +1,7 @@
 package edu.yan.gestaobiblioteca.model;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,14 +42,14 @@ public class Usuario implements UserDetails {
 	
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private LocalDate createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = true)
-    private Date updatedAt = null;
+    private LocalDate updatedAt = null;
     
     @Column(name = "deleted_at", nullable = true)
-    private Date deletedAt = null;
+    private LocalDate deletedAt = null;
 	
 	//many to many (usuario-papel)
 	
@@ -110,24 +110,24 @@ public class Usuario implements UserDetails {
 		this.papel = papel;
 	}
 
-	public Date getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public LocalDate getUpdatedAt() {
 		return updatedAt;
 	}
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(LocalDate updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	public Date getDeletedAt() {
+	public LocalDate getDeletedAt() {
 		return deletedAt;
 	}
-	public void setDeletedAt(Date deletedAt) {
+	public void setDeletedAt(LocalDate deletedAt) {
 		this.deletedAt = deletedAt;
 	}
 

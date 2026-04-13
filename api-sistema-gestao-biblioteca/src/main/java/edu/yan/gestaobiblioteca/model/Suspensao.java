@@ -1,6 +1,6 @@
 package edu.yan.gestaobiblioteca.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -28,10 +28,10 @@ public class Suspensao {
 	
 	@CreationTimestamp
     @Column(updatable = false, name = "data_inicio")
-	private Date dataInicio;
+	private LocalDate dataInicio;
 	
 	@Column(nullable = true,name = "data_fim")
-	private Date dataFim;
+	private LocalDate dataFim;
 
 	public Long getId() {
 		return id;
@@ -47,17 +47,17 @@ public class Suspensao {
 		this.usuario = usuario;
 	}
 
-	public Date getDataInicio() {
+	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
-	public void setDataInicio(Date dataInicio) {
+	public void setDataInicio(LocalDate dataInicio) {
 		this.dataInicio = dataInicio;
 	}
 
-	public Date getDataFim() {
+	public LocalDate getDataFim() {
 		return dataFim;
 	}
-	public void setDataFim(Date dataFim) {
+	public void setDataFim(LocalDate dataFim) {
 		this.dataFim = dataFim;
 	}
 	

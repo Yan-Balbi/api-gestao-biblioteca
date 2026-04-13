@@ -1,5 +1,6 @@
 package edu.yan.gestaobiblioteca.service.implementations;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,13 +33,7 @@ public class SuspensaoUsuarioServiceImplementation implements ISuspensaoService{
 			return null;
 		}
 		
-		Date agora = new Date();
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(agora);
-		calendar.add(Calendar.DAY_OF_MONTH, 14);
-
-		Date dataFim = calendar.getTime();
+		LocalDate dataFim = LocalDate.now().plusDays(14);
 		
 		Suspensao suspensao = new Suspensao();
 		suspensao.setUsuario(usuario);
