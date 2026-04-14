@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioInsertDto;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfInvalidoException;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.usuario.EmailJaCadastradoException;
@@ -46,7 +47,7 @@ public class AuthenticationServiceImplementationTest {
 	 */
 	@Test
 	void deveLancarExcecaoQuandoCpfInvalido() {
-	    Usuario usuario = new Usuario();
+		UsuarioInsertDto usuario = new UsuarioInsertDto();
 	    usuario.setNomeUsuario("nome");
 	    usuario.setEmail("email@email.com");
 	    usuario.setCpf("123"); // inválido
@@ -59,7 +60,7 @@ public class AuthenticationServiceImplementationTest {
 	
 	@Test
 	void deveLancarExcecaoQuandoCpfJaExiste() {
-	    Usuario usuario = new Usuario();
+		UsuarioInsertDto usuario = new UsuarioInsertDto();
 	    //inserindo um cpf válido gerado aleatoriamente
 	    usuario.setCpf("197.137.440-71");
 	
@@ -73,7 +74,7 @@ public class AuthenticationServiceImplementationTest {
 	
 	@Test
 	void deveLancarExcecaoQuandoEmailJaExiste() {
-	    Usuario usuario = new Usuario();
+		UsuarioInsertDto usuario = new UsuarioInsertDto();
 	    usuario.setEmail("teste@email.com");
 	    usuario.setCpf("197.137.440-71");
 	    usuario.setSenha("123");

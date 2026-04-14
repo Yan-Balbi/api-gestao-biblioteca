@@ -121,7 +121,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 	public Usuario signupAdmin(UsuarioInsertDto usuario) {
 		Usuario usuarioModel = new Usuario();
 		usuarioModel.setCpf(usuario.getCpf());
-		usuarioModel.setEmail(usuario.getCpf());
+		usuarioModel.setEmail(usuario.getEmail());
 		usuarioModel.setNomeUsuario(usuario.getNomeUsuario());
 		usuarioModel.setSenha(usuario.getSenha());
 		usuarioModel.setPapel("ROLE_ADMIN");
@@ -132,7 +132,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 	public Usuario signupBibliotecario(UsuarioInsertDto usuario) {
 		Usuario usuarioModel = new Usuario();
 		usuarioModel.setCpf(usuario.getCpf());
-		usuarioModel.setEmail(usuario.getCpf());
+		usuarioModel.setEmail(usuario.getEmail());
 		usuarioModel.setNomeUsuario(usuario.getNomeUsuario());
 		usuarioModel.setSenha(usuario.getSenha());
 		usuarioModel.setPapel("ROLE_BIBLIOTECARIO");
@@ -143,7 +143,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
 	public Usuario signupCliente(UsuarioInsertDto usuario) {
 		Usuario usuarioModel = new Usuario();
 		usuarioModel.setCpf(usuario.getCpf());
-		usuarioModel.setEmail(usuario.getCpf());
+		usuarioModel.setEmail(usuario.getEmail());
 		usuarioModel.setNomeUsuario(usuario.getNomeUsuario());
 		usuarioModel.setSenha(usuario.getSenha());
 		usuarioModel.setPapel("ROLE_CLIENTE");
