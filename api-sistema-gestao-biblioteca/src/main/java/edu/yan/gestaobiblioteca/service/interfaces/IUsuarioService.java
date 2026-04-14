@@ -10,9 +10,9 @@ public interface IUsuarioService {
 	/*Administrador*/
 	//UsuarioModel inserirAdmin(UsuarioModel usuarioModel);
 	
-	Usuario atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO);
+	Usuario atualizar(Long id, UsuarioUpdateDTO usuarioUpdateDTO);
 	
-	void deletarUsuario(Long id);
+	void deletar(Long id);
 	
 	/*Bibliotecario*/
 	//UsuarioModel inserirBibliotecario(UsuarioModel usuarioModel);

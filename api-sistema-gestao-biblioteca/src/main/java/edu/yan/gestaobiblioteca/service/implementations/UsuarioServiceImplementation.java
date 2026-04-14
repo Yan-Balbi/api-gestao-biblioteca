@@ -81,7 +81,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 */
 	@Override
 	@Transactional
-	public Usuario atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
+	public Usuario atualizar(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
 		Usuario usuarioBd = usuarioRepository.findAdminById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
 		usuarioBd.setCpf(usuarioUpdateDTO.getCpf());
 		usuarioBd.setEmail(usuarioUpdateDTO.getEmail());
@@ -92,7 +92,7 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	
 	@Override
 	@Transactional
-	public void deletarUsuario(Long id) {
+	public void deletar(Long id) {
 		Usuario usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Usuario de id '"+id+"' não encotrado"));
 		usuarioBd.setDeletedAt(LocalDate.now());
 	}

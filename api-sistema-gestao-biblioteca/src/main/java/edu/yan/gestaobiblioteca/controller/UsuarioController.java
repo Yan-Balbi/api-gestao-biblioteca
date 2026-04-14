@@ -67,7 +67,7 @@ public class UsuarioController {
 	@PreAuthorize("#usuarioId == authentication.principal.id")
 	public ResponseEntity<Void> deletarCliente(@PathVariable Long usuarioId){
 		System.out.println("CHEGOU NO DELETE");
-		usuarioImplementationService.deletarUsuario(usuarioId);	
+		usuarioImplementationService.deletar(usuarioId);	
 		return ResponseEntity.noContent().build();
 	}
 	

@@ -47,7 +47,7 @@ public class UsuarioServiceImplementationTest {
 	        .thenReturn(Optional.empty());
 
 	    assertThrows(UsuarioNaoEncontrado.class, () -> {
-	    	usuarioServiceImplementation.atualizarUsuario(id, new UsuarioUpdateDTO());
+	    	usuarioServiceImplementation.atualizar(id, new UsuarioUpdateDTO());
 	    });
 	}
 	
@@ -59,7 +59,7 @@ public class UsuarioServiceImplementationTest {
 	        .thenReturn(Optional.empty());
 
 	    assertThrows(UsuarioNaoEncontrado.class, () -> {
-	    	usuarioServiceImplementation.deletarUsuario(id);
+	    	usuarioServiceImplementation.deletar(id);
 	    });
 	}
 	
@@ -79,7 +79,7 @@ public class UsuarioServiceImplementationTest {
 	        .thenReturn(Optional.empty());
 
 	    assertThrows(UsuarioNaoEncontrado.class, () -> {
-	    	usuarioServiceImplementation.atualizarUsuario(id, dto);
+	    	usuarioServiceImplementation.atualizar(id, dto);
 	    });
 	}
 	
@@ -100,7 +100,7 @@ public class UsuarioServiceImplementationTest {
 	    when(usuarioRepository.findAdminById(id))
 	        .thenReturn(Optional.of(usuario));
 
-	    Usuario resultado = usuarioServiceImplementation.atualizarUsuario(id, dto);
+	    Usuario resultado = usuarioServiceImplementation.atualizar(id, dto);
 
 	    assertEquals("123", resultado.getCpf());
 	    assertEquals("teste@email.com", resultado.getEmail());
