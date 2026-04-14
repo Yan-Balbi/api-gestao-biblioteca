@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,13 +60,16 @@ public class UsuarioController {
         return ResponseEntity.ok(loginResponse);
 	}
 	
+	//authentication é equivalente a fazer Authentication authentication = SecurityContextHolder.getContext().getAuthentication()
+	//quando eu faço authentication.getPrincipal, eu obtenho o usuário, ou seja Usuario user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	// então, a consulta seria algo como: Long id = SecurityContextHolder.getContext().getAuthentication().getPrincipal().getId();
 	@DeleteMapping("/cliente/{usuarioId}")
+	@PreAuthorize("#usuarioId == authentication.principal.id")
 	public ResponseEntity<Void> deletarCliente(@PathVariable Long usuarioId){
 		System.out.println("CHEGOU NO DELETE");
 		usuarioImplementationService.deletarUsuario(usuarioId);	
 		return ResponseEntity.noContent().build();
 	}
-	
 	
     @GetMapping("/home")
     public String home(){
