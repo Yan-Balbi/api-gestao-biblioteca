@@ -1,13 +1,20 @@
 package edu.yan.gestaobiblioteca.dto.regra;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class RegraUpdateDto {
 
+	@NotNull(message="Campo 'duracaoSuspensaoUsuario' é obrigatório")
 	private int duracaoSuspensaoUsuario;
 	
+	@NotNull(message="Campo 'tempoDuracaoEmprestimo' é obrigatório")
 	private int tempoDuracaoEmprestimo;
 	
+	@NotNull(message="Campo 'tempoExpiracaoReserva' é obrigatório")
 	private int tempoExpiracaoReserva;
 	
+	@NotNull(message="Campo 'quantidadeMaximaEmprestimos' é importante")
 	private int quantidadeMaximaEmprestimos;
 	
 	public RegraUpdateDto() {
