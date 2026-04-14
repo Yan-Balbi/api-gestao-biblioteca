@@ -2,8 +2,6 @@ package edu.yan.gestaobiblioteca.controller;
 
 import java.net.URI;
 
-
-import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,10 +15,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import edu.yan.gestaobiblioteca.dto.usuario.LoginResposta;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioInsertDto;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
 import edu.yan.gestaobiblioteca.service.implementations.JwtServiceImplementation;
 import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("usuario")
@@ -35,7 +35,7 @@ public class UsuarioController {
 	private JwtServiceImplementation jwtServiceImplementation;
 	
 	@PostMapping("/auth/cliente-signup")
-	public ResponseEntity<Usuario> inserirCliente(@RequestBody Usuario usuarioRequest){
+	public ResponseEntity<Usuario> inserirCliente(@RequestBody @Valid UsuarioInsertDto usuarioRequest){
 		
 		Usuario usuarioCriado = authenticatioServiceImplementation.signupCliente(usuarioRequest);
 		
@@ -45,7 +45,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/auth/cliente-login")
-	public ResponseEntity<LoginResposta> login(@RequestBody LoginUsuarioDto loginUsuarioDto){
+	public ResponseEntity<LoginResposta> login(@RequestBody @Valid LoginUsuarioDto loginUsuarioDto){
 		
         Usuario authenticatedUser = authenticatioServiceImplementation.authenticate(loginUsuarioDto);
 

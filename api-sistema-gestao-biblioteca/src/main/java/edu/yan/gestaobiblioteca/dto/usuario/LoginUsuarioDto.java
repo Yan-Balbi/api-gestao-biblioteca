@@ -1,8 +1,12 @@
 package edu.yan.gestaobiblioteca.dto.usuario;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginUsuarioDto {
+	@NotBlank(message = "Campo 'email' é obrigatório")
     private String email;
     
+	@NotBlank(message = "Campo 'senha' é obrigatório")
     private String senha;
 
 	public String getEmail() {

@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioInsertDto;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfInvalidoException;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.usuario.CredenciaisInvalidasException;
@@ -117,19 +118,34 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
     }
 
 	@Override
-	public Usuario signupAdmin(Usuario usuarioModel) {
+	public Usuario signupAdmin(UsuarioInsertDto usuario) {
+		Usuario usuarioModel = new Usuario();
+		usuarioModel.setCpf(usuario.getCpf());
+		usuarioModel.setEmail(usuario.getCpf());
+		usuarioModel.setNomeUsuario(usuario.getNomeUsuario());
+		usuarioModel.setSenha(usuario.getSenha());
 		usuarioModel.setPapel("ROLE_ADMIN");
 		return signup(usuarioModel);
 	}
     
 	@Override
-	public Usuario signupBibliotecario(Usuario usuarioModel) {
+	public Usuario signupBibliotecario(UsuarioInsertDto usuario) {
+		Usuario usuarioModel = new Usuario();
+		usuarioModel.setCpf(usuario.getCpf());
+		usuarioModel.setEmail(usuario.getCpf());
+		usuarioModel.setNomeUsuario(usuario.getNomeUsuario());
+		usuarioModel.setSenha(usuario.getSenha());
 		usuarioModel.setPapel("ROLE_BIBLIOTECARIO");
 		return signup(usuarioModel);
 	}
 	
 	@Override
-	public Usuario signupCliente(Usuario usuarioModel) {
+	public Usuario signupCliente(UsuarioInsertDto usuario) {
+		Usuario usuarioModel = new Usuario();
+		usuarioModel.setCpf(usuario.getCpf());
+		usuarioModel.setEmail(usuario.getCpf());
+		usuarioModel.setNomeUsuario(usuario.getNomeUsuario());
+		usuarioModel.setSenha(usuario.getSenha());
 		usuarioModel.setPapel("ROLE_CLIENTE");
 		return signup(usuarioModel);
 	}
