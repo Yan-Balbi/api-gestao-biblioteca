@@ -1,9 +1,18 @@
 package edu.yan.gestaobiblioteca.dto.usuario;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class UsuarioUpdateDTO {
+	@NotBlank(message = "Campo 'cpf' é obrigatório")
 	private String cpf;
+	
+	@NotBlank(message = "Campo 'nomeUsuario' é obrigatório")
 	private String nomeUsuario;
+	
+	@NotBlank(message = "Campo 'email' é obrigatório")
 	private String email;
+	
+	@NotBlank(message = "Campo 'senha' é obrigatório")
 	private String senha;
 	
 	public UsuarioUpdateDTO() {

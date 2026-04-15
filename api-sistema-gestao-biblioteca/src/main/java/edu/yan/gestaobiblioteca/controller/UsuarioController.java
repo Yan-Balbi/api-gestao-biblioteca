@@ -5,11 +5,11 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginResposta;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioInsertDto;
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
 import edu.yan.gestaobiblioteca.service.implementations.JwtServiceImplementation;
@@ -64,11 +65,17 @@ public class UsuarioController {
 	//quando eu faço authentication.getPrincipal, eu obtenho o usuário, ou seja Usuario user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	// então, a consulta seria algo como: Long id = SecurityContextHolder.getContext().getAuthentication().getPrincipal().getId();
 	@DeleteMapping("/cliente/{usuarioId}")
-	@PreAuthorize("#usuarioId == authentication.principal.id")
+	@PreAuthorize("#usuarioId == authentication.principal.id or hasRole('ADMIN')")
 	public ResponseEntity<Void> deletarCliente(@PathVariable Long usuarioId){
-		System.out.println("CHEGOU NO DELETE");
 		usuarioImplementationService.deletar(usuarioId);	
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/{usuarioId}")
+	@PreAuthorize("#usuarioId == authentication.principal.id")
+	public ResponseEntity<Usuario> atualizarRegra(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioUpdateDTO usuarioUpdateDto) {
+		Usuario usuario = usuarioImplementationService.atualizar(usuarioId, usuarioUpdateDto);
+		return ResponseEntity.ok(usuario);
 	}
 	
     @GetMapping("/home")

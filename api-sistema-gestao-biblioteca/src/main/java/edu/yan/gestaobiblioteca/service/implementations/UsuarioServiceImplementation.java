@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
@@ -22,9 +23,11 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 */
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImplementation(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImplementation(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 	
     private static boolean cpfValido(String cpf) {
@@ -82,11 +85,13 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	@Override
 	@Transactional
 	public Usuario atualizar(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
-		Usuario usuarioBd = usuarioRepository.findAdminById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
+		Usuario usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
+		//se o cpf mudar, verificar se o novo cpf inserido pode ser usado (se é valido e se já não está em uso)
 		usuarioBd.setCpf(usuarioUpdateDTO.getCpf());
 		usuarioBd.setEmail(usuarioUpdateDTO.getEmail());
 		usuarioBd.setNomeUsuario(usuarioUpdateDTO.getNomeUsuario());
 		usuarioBd.setSenha(usuarioUpdateDTO.getSenha());
+		usuarioBd.setSenha(passwordEncoder.encode(usuarioUpdateDTO.getSenha()));
 		return usuarioBd;
 	}
 	
