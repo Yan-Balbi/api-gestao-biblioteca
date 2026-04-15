@@ -13,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
+import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.usuario.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
@@ -27,6 +29,10 @@ import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementa
 // Um teste sempre segue a estrutura arranje (when), act ( service.metodo() ) e assert (assertEquals(...), verify(...))
 
 public class UsuarioServiceImplementationTest {
+	
+	@Mock
+	private PasswordEncoder passwordEncoder;
+	
 	@Mock
 	private UsuarioRepository usuarioRepository;
 	
@@ -97,15 +103,17 @@ public class UsuarioServiceImplementationTest {
 	    dto.setNomeUsuario("Yan");
 	    dto.setSenha("123456");
 
-	    when(usuarioRepository.findAdminById(id))
+	    when(usuarioRepository.findById(id))
 	        .thenReturn(Optional.of(usuario));
 
+	    when(passwordEncoder.encode(dto.getSenha())).thenReturn("senha-criptografada");
+	    
 	    Usuario resultado = usuarioServiceImplementation.atualizar(id, dto);
 
 	    assertEquals("123", resultado.getCpf());
 	    assertEquals("teste@email.com", resultado.getEmail());
 	    assertEquals("Yan", resultado.getNomeUsuario());
-	    assertEquals("123456", resultado.getSenha());
+	    assertEquals("senha-criptografada", resultado.getSenha());
 	}
 	
 	@Test
@@ -121,5 +129,29 @@ public class UsuarioServiceImplementationTest {
 
 	    assertTrue(resultado.isPresent());
 	    verify(usuarioRepository).findClienteByCpf(cpf);
+	}
+	
+	@Test
+	void deveLancarFalhaAoTentarAtualizarParaUmCPFEmUso() {
+		Long id = 1L;
+		
+		UsuarioUpdateDTO usuarioUpdateDto = new UsuarioUpdateDTO();
+		usuarioUpdateDto.setNomeUsuario("João");
+		usuarioUpdateDto.setCpf("123.456.789-11");
+		usuarioUpdateDto.setEmail("joao@email.com");
+		
+		
+		Usuario usuarioEncontrato = new Usuario();
+		usuarioEncontrato.setNomeUsuario("João");
+		usuarioEncontrato.setCpf("123.456.789-10");
+		usuarioEncontrato.setEmail("joao@email.com");
+		
+		when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuarioEncontrato));
+		
+		when(usuarioRepository.haUsuarioAtivoComOCpf(usuarioUpdateDto.getCpf())).thenReturn(true);
+		
+		assertThrows(CpfJaCadastradoException.class, () -> {
+			usuarioServiceImplementation.atualizar(id, usuarioUpdateDto);
+		});
 	}
 }

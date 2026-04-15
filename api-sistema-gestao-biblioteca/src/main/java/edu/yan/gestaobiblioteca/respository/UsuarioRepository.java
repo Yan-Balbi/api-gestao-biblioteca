@@ -83,4 +83,11 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	//TODO:IMPLEMENTAR DEPOIS DE CRIAR OS EMPRESTIMOS
 	//@Query("SELECT u FROM Usuario u JOIN emprestimo e ON u.id = e.usuario_id WHERE u.papel = 'ROLE_CLIENTE' AND u.deletedAt IS NULL AND NOW <= e.")
 	//Iterable<Usuario> findTodosUsuariosAtivosComEmprestimoAtrasado();
+	
+	@Query("""
+		    SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END
+		    FROM Usuario u
+		    WHERE u.cpf = :cpf AND u.deletedAt IS NULL
+		   """)
+	boolean haUsuarioAtivoComOCpf(@Param("cpf") String cpf);
 }

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
+import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.usuario.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
@@ -87,6 +88,11 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 	public Usuario atualizar(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
 		Usuario usuarioBd = usuarioRepository.findById(id).orElseThrow(()-> new UsuarioNaoEncontrado("Administrador de id '"+id+"' não encotrado"));
 		//se o cpf mudar, verificar se o novo cpf inserido pode ser usado (se é valido e se já não está em uso)
+		if(!usuarioUpdateDTO.getCpf().equals(usuarioBd.getCpf())) {
+			if(usuarioRepository.haUsuarioAtivoComOCpf(usuarioUpdateDTO.getCpf())) {
+				throw new CpfJaCadastradoException("O cpf '"+usuarioUpdateDTO.getCpf()+"' informado já está em uso.");
+			}
+		}
 		usuarioBd.setCpf(usuarioUpdateDTO.getCpf());
 		usuarioBd.setEmail(usuarioUpdateDTO.getEmail());
 		usuarioBd.setNomeUsuario(usuarioUpdateDTO.getNomeUsuario());
