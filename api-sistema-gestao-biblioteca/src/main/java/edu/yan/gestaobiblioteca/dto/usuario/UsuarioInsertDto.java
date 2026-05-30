@@ -15,6 +15,17 @@ public class UsuarioInsertDto {
 	@NotBlank(message = "Campo 'senha' é obrigatório")
 	private String senha;
 
+	public UsuarioInsertDto() {
+		
+	}
+	
+	public UsuarioInsertDto(String cpf, String nome, String email, String senha) {
+		setCpf(cpf);
+		setNomeUsuario(nome);
+		setEmail(email);
+		setSenha(senha);
+	}
+	
 	public String getCpf() {
 		return cpf;
 	}

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,17 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioInsertDto;
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
 import edu.yan.gestaobiblioteca.exception.usuario.CpfJaCadastradoException;
 import edu.yan.gestaobiblioteca.exception.usuario.UsuarioNaoEncontrado;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementation;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 // os nomes dos testes devem descrever comportamentos de regras de negócios
 
@@ -29,6 +35,7 @@ import edu.yan.gestaobiblioteca.service.implementations.UsuarioServiceImplementa
 // Um teste sempre segue a estrutura arranje (when), act ( service.metodo() ) e assert (assertEquals(...), verify(...))
 
 public class UsuarioServiceImplementationTest {
+	private Validator validator;
 	
 	@Mock
 	private PasswordEncoder passwordEncoder;
@@ -41,10 +48,33 @@ public class UsuarioServiceImplementationTest {
 	
 	@BeforeEach
 	void setup() {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 		MockitoAnnotations.openMocks(this);
 	}
 	
 	//TESTES CRÍTICOS
+
+	
+	/*
+	 * testes de emissão de falhas ao realizar delete de usuario
+	 */
+	@Test
+	void deveLancarExcecaoAoDeletarUsuarioInexistente() {
+	    Long id = 1L;
+
+	    when(usuarioRepository.findById(id))
+	        .thenReturn(Optional.empty());
+
+	    assertThrows(UsuarioNaoEncontrado.class, () -> {
+	    	usuarioServiceImplementation.deletar(id);
+	    });
+	}
+	
+	
+	/*
+	 * testes de emissão de falhas ao realizar atualização de usuario
+	 */
 	@Test
 	void deveLancarExcecaoQuandoUsuarioNaoEncontrado() {
 	    Long id = 1L;
@@ -58,22 +88,8 @@ public class UsuarioServiceImplementationTest {
 	}
 	
 	@Test
-	void deveLancarExcecaoAoDeletarUsuarioInexistente() {
-	    Long id = 1L;
-
-	    when(usuarioRepository.findById(id))
-	        .thenReturn(Optional.empty());
-
-	    assertThrows(UsuarioNaoEncontrado.class, () -> {
-	    	usuarioServiceImplementation.deletar(id);
-	    });
-	}
-	
-	@Test
 	void deveLancarExcecaoAoAtualizarUsuarioInexistente() {
 	    Long id = 1L;
-
-	    UsuarioUpdateDTO usuario = new UsuarioUpdateDTO();
 
 	    UsuarioUpdateDTO dto = new UsuarioUpdateDTO();
 	    dto.setCpf("123");
@@ -87,6 +103,70 @@ public class UsuarioServiceImplementationTest {
 	    assertThrows(UsuarioNaoEncontrado.class, () -> {
 	    	usuarioServiceImplementation.atualizar(id, dto);
 	    });
+	}
+	
+	/*
+	 * testes de validação de dados inseridos no DTO de update de usuario
+	 */
+	
+	@Test
+	void deveLancarErroQuandoTentarAtualizarComCpfNulo() {
+        UsuarioUpdateDTO dto = new UsuarioUpdateDTO(
+                null,
+                "yan",
+                "yan@email.com",
+                "123456"
+        );
+
+        Set<ConstraintViolation<UsuarioUpdateDTO>> violations =
+                validator.validate(dto);
+
+        assertEquals(1, violations.size());
+	}
+	
+	@Test
+	void deveLancarErroQuandoTentarAtualizarComEmailNulo() {
+        UsuarioUpdateDTO dto = new UsuarioUpdateDTO(
+                null,
+                "yan",
+                null,
+                "123456"
+        );
+
+        Set<ConstraintViolation<UsuarioUpdateDTO>> violations =
+                validator.validate(dto);
+
+        assertEquals(2, violations.size());
+	}
+	
+	@Test
+	void deveLancarErroQuandoTentarAtualizarComNomeUsuarioNulo() {
+        UsuarioUpdateDTO dto = new UsuarioUpdateDTO(
+                null,
+                null,
+                null,
+                "123456"
+        );
+
+        Set<ConstraintViolation<UsuarioUpdateDTO>> violations =
+                validator.validate(dto);
+
+        assertEquals(3, violations.size());		
+	}
+	
+	@Test
+	void deveLancarErroQuandoTentarAtualizarComSenhaNula() {
+        UsuarioUpdateDTO dto = new UsuarioUpdateDTO(
+                null,
+                null,
+                null,
+                null
+        );
+
+        Set<ConstraintViolation<UsuarioUpdateDTO>> violations =
+                validator.validate(dto);
+
+        assertEquals(4, violations.size());				
 	}
 	
 	//testes menos críticos

@@ -1,10 +1,12 @@
 package edu.yan.gestaobiblioteca.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,14 @@ import edu.yan.gestaobiblioteca.exception.usuario.EmailJaCadastradoException;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.respository.UsuarioRepository;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 public class AuthenticationServiceImplementationTest {
+	private Validator validator;
+	
 	@Mock 
 	UsuarioRepository usuarioRepository;
 	
@@ -33,6 +41,8 @@ public class AuthenticationServiceImplementationTest {
 	
 	@BeforeEach
 	void setup() {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 		MockitoAnnotations.openMocks(this);
 		when(passwordEncoder.encode(anyString())).thenReturn("senhaCriptografada");
 	}
@@ -44,6 +54,10 @@ public class AuthenticationServiceImplementationTest {
 	 * O admin é um caso especial, ele precisa ser inserido no sistema assim que ele é iniciado pela primeira vez
 	 * eu acho que deveria existir uma função chamada 'inserirPrimeiroAdmin' e deixar essa função com validação de cpf normal para add 
 	 * novos admins
+	 */
+	
+	/*
+	 * testes de emissão de falhas ao realizar atualização de usuario
 	 */
 	@Test
 	void deveLancarExcecaoQuandoCpfInvalido() {
@@ -85,6 +99,69 @@ public class AuthenticationServiceImplementationTest {
 	    assertThrows(EmailJaCadastradoException.class, () -> {
 	    	authServiceImpl.signupAdmin(usuario);
 	    });
+	}
+	
+	/*
+	 * testes de validação de dados inseridos no DTO de insert de usuario
+	*/
+	@Test
+	void deveLancarErroQuandoTentarInserirComCpfNulo() {
+		UsuarioInsertDto dto = new UsuarioInsertDto(
+                null,
+                "yan",
+                "yan@email.com",
+                "123456"
+        );
+
+        Set<ConstraintViolation<UsuarioInsertDto>> violations =
+                validator.validate(dto);
+
+        assertEquals(1, violations.size());
+	}
+	
+	@Test
+	void deveLancarErroQuandoTentarInserirComEmailNulo() {
+        UsuarioInsertDto dto = new UsuarioInsertDto(
+                null,
+                "yan",
+                null,
+                "123456"
+        );
+
+        Set<ConstraintViolation<UsuarioInsertDto>> violations =
+                validator.validate(dto);
+
+        assertEquals(2, violations.size());
+	}
+	
+	@Test
+	void deveLancarErroQuandoTentarInserirComNomeUsuarioNulo() {
+		UsuarioInsertDto dto = new UsuarioInsertDto(
+                null,
+                null,
+                null,
+                "123456"
+        );
+
+        Set<ConstraintViolation<UsuarioInsertDto>> violations =
+                validator.validate(dto);
+
+        assertEquals(3, violations.size());		
+	}
+	
+	@Test
+	void deveLancarErroQuandoTentarInserirComSenhaNula() {
+		UsuarioInsertDto dto = new UsuarioInsertDto(
+                null,
+                null,
+                null,
+                null
+        );
+
+        Set<ConstraintViolation<UsuarioInsertDto>> violations =
+                validator.validate(dto);
+
+        assertEquals(4, violations.size());				
 	}
 	
 	//para Bibliotecário
