@@ -18,7 +18,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginResposta;
 import edu.yan.gestaobiblioteca.dto.usuario.LoginUsuarioDto;
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioInsertDto;
+import edu.yan.gestaobiblioteca.dto.usuario.UsuarioResponseDto;
 import edu.yan.gestaobiblioteca.dto.usuario.UsuarioUpdateDTO;
+import edu.yan.gestaobiblioteca.mappers.UsuarioMapper;
 import edu.yan.gestaobiblioteca.model.Usuario;
 import edu.yan.gestaobiblioteca.service.implementations.AuthenticationServiceImplementation;
 import edu.yan.gestaobiblioteca.service.implementations.JwtServiceImplementation;
@@ -73,9 +75,10 @@ public class UsuarioController {
 	
 	@PutMapping("/{usuarioId}")
 	@PreAuthorize("#usuarioId == authentication.principal.id")
-	public ResponseEntity<Usuario> atualizarRegra(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioUpdateDTO usuarioUpdateDto) {
+	public ResponseEntity<UsuarioResponseDto> atualizar(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioUpdateDTO usuarioUpdateDto) {
 		Usuario usuario = usuarioImplementationService.atualizar(usuarioId, usuarioUpdateDto);
-		return ResponseEntity.ok(usuario);
+		UsuarioMapper mapper = new UsuarioMapper();
+		return ResponseEntity.ok(mapper.toResponseDTO(usuario));
 	}
 	
     @GetMapping("/home")

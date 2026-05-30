@@ -93,10 +93,10 @@ public class UsuarioServiceImplementation implements IUsuarioService{
 				throw new CpfJaCadastradoException("O cpf '"+usuarioUpdateDTO.getCpf()+"' informado já está em uso.");
 			}
 		}
+		
 		usuarioBd.setCpf(usuarioUpdateDTO.getCpf());
 		usuarioBd.setEmail(usuarioUpdateDTO.getEmail());
 		usuarioBd.setNomeUsuario(usuarioUpdateDTO.getNomeUsuario());
-		usuarioBd.setSenha(usuarioUpdateDTO.getSenha());
 		usuarioBd.setSenha(passwordEncoder.encode(usuarioUpdateDTO.getSenha()));
 		return usuarioBd;
 	}
