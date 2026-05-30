@@ -40,13 +40,13 @@ public class UsuarioController {
 	private JwtServiceImplementation jwtServiceImplementation;
 	
 	@PostMapping("/auth/cliente-signup")
-	public ResponseEntity<Usuario> inserirCliente(@RequestBody @Valid UsuarioInsertDto usuarioRequest){
+	public ResponseEntity<UsuarioResponseDto> inserirCliente(@RequestBody @Valid UsuarioInsertDto usuarioRequest){
 		
 		Usuario usuarioCriado = authenticatioServiceImplementation.signupCliente(usuarioRequest);
 		
 		URI local = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuarioCriado.getId()).toUri();
-		
-		return ResponseEntity.created(local).body(usuarioCriado);
+		UsuarioMapper mapper = new UsuarioMapper();
+		return ResponseEntity.created(local).body(mapper.toResponseDTO(usuarioCriado));
 	}
 	
 	@PostMapping("/auth/cliente-login")
