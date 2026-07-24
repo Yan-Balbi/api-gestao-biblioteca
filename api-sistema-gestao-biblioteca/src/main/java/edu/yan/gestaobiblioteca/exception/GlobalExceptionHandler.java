@@ -13,6 +13,14 @@ import edu.yan.gestaobiblioteca.exception.Editora.EditoraInativaNaoPodeSerEditad
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaAtivaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraJaInativaException;
 import edu.yan.gestaobiblioteca.exception.Editora.EditoraNaoEncontradaException;
+import edu.yan.gestaobiblioteca.exception.autor.AutorJaEhPseudonimoException;
+import edu.yan.gestaobiblioteca.exception.autor.AutorNaoEhPseudonimoException;
+import edu.yan.gestaobiblioteca.exception.autor.AutorNaoEhVerdadeiroException;
+import edu.yan.gestaobiblioteca.exception.autor.AutorNaoEncontradoException;
+import edu.yan.gestaobiblioteca.exception.autor.AutorNaoPodeSerPseudonimoDeSiMesmoException;
+import edu.yan.gestaobiblioteca.exception.autor.PseudonimoJaNaoPossuiVinculosComAutorVerdadeiroException;
+import edu.yan.gestaobiblioteca.exception.autor.PseudonimoJaVinculadoAUmAutorException;
+import edu.yan.gestaobiblioteca.exception.autor.PseudonimoNaoPertenceAoAutorInformadoException;
 import edu.yan.gestaobiblioteca.exception.regra.DuracaoSuspensaoDeUsuarioInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.QuantidadeMaximaEmprestimosInvalidaException;
 import edu.yan.gestaobiblioteca.exception.regra.RegraJaInseridaException;
@@ -185,6 +193,79 @@ public class GlobalExceptionHandler {
 		exception.printStackTrace();
 		return detalheErro;
     }
+	
+	@ExceptionHandler({
+		AutorJaEhPseudonimoException.class,
+		AutorNaoEhPseudonimoException.class,
+		AutorNaoEhVerdadeiroException.class,
+		AutorNaoEncontradoException.class,
+		AutorNaoPodeSerPseudonimoDeSiMesmoException.class,
+		PseudonimoJaNaoPossuiVinculosComAutorVerdadeiroException.class,
+		PseudonimoJaVinculadoAUmAutorException.class,
+		PseudonimoNaoPertenceAoAutorInformadoException.class
+		
+	})
+	public ProblemDetail handleAutorException(Exception exception) {
+		ProblemDetail detalheErro = null;
+		
+		if (exception instanceof AutorJaEhPseudonimoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Autor já é psudonimo.");
+		}
+		
+		
+		if (exception instanceof AutorNaoEhPseudonimoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Autor não é pseudonimo.");
+		}
+		
+		
+		if (exception instanceof AutorNaoEhVerdadeiroException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Autor não é verdadeiro.");
+		}
+		
+		
+		if (exception instanceof AutorNaoEncontradoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Autor não encontrado.");
+		}
+		
+		
+		if (exception instanceof AutorNaoPodeSerPseudonimoDeSiMesmoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Autor pseudonimo de si mesmo.");
+		}
+		
+		
+		if (exception instanceof PseudonimoJaNaoPossuiVinculosComAutorVerdadeiroException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Pseudonimo já não esta vinculado a outro autor.");
+		}
+		
+		
+		if (exception instanceof PseudonimoJaVinculadoAUmAutorException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Pseudonimo ja vinculado a outro autor.");
+		}
+		
+		
+		if (exception instanceof PseudonimoNaoPertenceAoAutorInformadoException) {
+		    detalheErro = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+		    detalheErro.setDetail(exception.getMessage());
+		    detalheErro.setTitle("Pseudonimo não pertence ao autor informado.");
+		}
+		
+		exception.printStackTrace();
+		return detalheErro;
+	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {

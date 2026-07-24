@@ -52,6 +52,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/usuario/auth/cliente-login").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/regra/atualizar/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/editora/**").hasAnyRole("ADMIN", "BIBLIOTECARIO")
+                        .requestMatchers(HttpMethod.POST, "/autor/**").hasAnyRole("ADMIN", "BIBLIOTECARIO")
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(management -> management

@@ -1,7 +1,7 @@
 package edu.yan.gestaobiblioteca.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -41,10 +41,10 @@ public class Autor {
     //String nomeExibicao;
 	
 	@Column(updatable = true, nullable = true, name="data_nascimento")
-	Date dataNascimento;
+	LocalDate dataNascimento;
 	
 	@Column(updatable = true, nullable = true, name="data_morte")
-	Date dataMorte;
+	LocalDate dataMorte;
 	
 	@Column(columnDefinition = "TEXT")
 	String biografia;
@@ -93,17 +93,17 @@ public class Autor {
 		this.sufixo = sufixo;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate  getDataNascimento() {
 		return dataNascimento;
 	}
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate  dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public Date getDataMorte() {
+	public LocalDate  getDataMorte() {
 		return dataMorte;
 	}
-	public void setDataMorte(Date dataMorte) {
+	public void setDataMorte(LocalDate  dataMorte) {
 		this.dataMorte = dataMorte;
 	}
 
@@ -114,4 +114,24 @@ public class Autor {
 		this.biografia = biografia;
 	}
 	
+	public boolean isAnonimo() {
+		return anonimo;
+	}
+	public void setAnonimo(boolean anonimo) {
+		this.anonimo = anonimo;
+	}
+	
+	public Autor getAutorVerdadeiro() {
+		return autorVerdadeiro;
+	}
+	public void setAutorVerdadeiro(Autor autorVerdadeiro) {
+		this.autorVerdadeiro = autorVerdadeiro;
+	}
+	
+	public List<Autor> getPseudonimos() {
+		return pseudonimos;
+	}
+	public void setPseudonimos(List<Autor> pseudonimos) {
+		this.pseudonimos = pseudonimos;
+	}
 }

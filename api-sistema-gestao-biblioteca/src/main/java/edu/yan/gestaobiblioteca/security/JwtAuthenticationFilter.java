@@ -70,6 +70,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
 		} catch (Exception e) {
+			logger.error("Erro no JwtAuthenticationFilter: ", e);
 //	        handlerExceptionResolver.resolveException(request, response, null, e);
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);//fix
 	        return;
