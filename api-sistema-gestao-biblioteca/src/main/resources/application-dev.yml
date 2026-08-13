@@ -5,9 +5,9 @@ spring:
     #username: root
     #password: senha
         #PostgreSQL
-    url: jdbc:postgresql://localhost:5432/sistema_agendamento_livro_db
-    username: postgres
-    password: PQFL2024
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     show-sql: true
     open-in-view: false

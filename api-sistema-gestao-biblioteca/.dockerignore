@@ -1,0 +1,7 @@
+*.log
+.env
+temp/
+tmp/
+node_modules/
+Dockerfile*
+.dockerignore
