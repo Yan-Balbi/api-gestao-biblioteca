@@ -79,3 +79,54 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 }
+
+/*
+                  REQUISIÇÃO HTTP
+                       │
+                       ▼
+             doFilterInternal()
+                       │
+                       ▼
+           Pega Authorization
+                       │
+              ┌────────┴────────┐
+              │                 │
+           não tem            tem Bearer
+           Bearer                │
+              │                  ▼
+              │             Extrai JWT
+              │                  │
+              │                  ▼
+              │          Extrai email do JWT
+              │                  │
+              │                  ▼
+              │       Já existe Authentication?
+              │                  │
+              │            ┌─────┴─────┐
+              │           sim          não
+              │            │             │
+              │            │             ▼
+              │            │       Busca usuário
+              │            │             │
+              │            │             ▼
+              │            │       Valida JWT
+              │            │             │
+              │            │        ┌────┴────┐
+              │            │       inválido  válido
+              │            │          │         │
+              │            │          │         ▼
+              │            │          │    Cria Authentication
+              │            │          │         │
+              │            │          │         ▼
+              │            │          │    SecurityContext
+              │            │          │
+              └────────────┴──────────┴─────────┐
+                                                 ▼
+                                      filterChain.doFilter()
+                                                 │
+                                                 ▼
+                                      Próximos filtros
+                                                 │
+                                                 ▼
+                                           Controller
+ **/

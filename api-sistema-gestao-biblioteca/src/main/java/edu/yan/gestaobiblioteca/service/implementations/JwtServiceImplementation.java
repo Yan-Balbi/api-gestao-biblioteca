@@ -68,7 +68,7 @@ public class JwtServiceImplementation implements IJwtService{
 	@Override
 	public <T> T extrairClaim(
 			String token, 
-			Function<Claims, T> claimsResolver /*função anônima chamada claimsResolver que recebe claims e retorna um objeto qualquer*/
+			Function<Claims, T> claimsResolver /*função anônima chamada claimsResolver que recebe claims e retorna um objeto do tipo T */
 	)	{
         final Claims claims = extrairTodosClaims(token);
         return claimsResolver.apply(claims);

@@ -73,13 +73,17 @@ public class UsuarioController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping("/{usuarioId}")
+	@PutMapping("/{usuarioId}") //esse aqui seria atualizar cliente
 	@PreAuthorize("#usuarioId == authentication.principal.id")
 	public ResponseEntity<UsuarioResponseDto> atualizar(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioUpdateDTO usuarioUpdateDto) {
 		Usuario usuario = usuarioImplementationService.atualizar(usuarioId, usuarioUpdateDto);
 		UsuarioMapper mapper = new UsuarioMapper();
 		return ResponseEntity.ok(mapper.toResponseDTO(usuario));
 	}
+	
+	//TODO: teria que ter um atualizar bibliotecario (para o caso de um admin atualizar os dados de um funcionario)
+	//@PreAuthorize("(#usuarioId == authentication.principal.id and hasRole('BIBLIOTECARIO')) or hasRole('ADMIN')")
+	
 	
     @GetMapping("/home")
     public String home(){
