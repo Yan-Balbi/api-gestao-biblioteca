@@ -1,58 +1,90 @@
 # api-gestao-biblioteca
 API REST para gestão de biblioteca, desenvolvida para gerenciar o cadastro de livros, autores, editoras, usuários e o controle de empréstimos. O sistema permite que funcionários registrem empréstimos e devoluções, enquanto clientes podem consultar o catálogo e agendar retiradas de livros.
 
-## LEVANTAMENTO DE REQUISITOS FUNCIONAIS
+## Quickstart
+Seguindo as intruções abaixo, a aplicação subirá localmente em menos de 2 minutos.
 
-### Usuarios
-- O sistema deve permitir que um cliente crie uma conta.
-- O sistema deve permitir que qualquer usuário realize login com e-mail e senha.
-- O sistema deve permitir que o administrador cadastre/atualize/inative um bibliotecário.
-- O sistema deve permitir cadastrar novos usuários com as credenciais usadas em contas já `soft-deletadas`.
-  
-### Visualizações
-- O sistema deve permitir que o cliente/bibliotecário/admin/convidado visualize os livros disponíveis.
-- O sistema deve permitir que o cliente/bibliotecário/admin/convidado visualize os livros disponíveis.
-- O sistema deve permitir que o cliente/bibliotecário/admin/convidado filtre livros por meio de data de publicação, autor, editora, ou ISBN.
-- O sistema deve permitir que o bibliotecário/administrador/cliente visualize reservas ativas, e opcionalmente, reservas expiradas .
+### Pré-requisitos
+* [Docker Desktop](https://docker.com) (inclui Docker Compose)
+* Git
+* Conexão com a internet
 
-### Livros e exemplares
-- O sistema deve permitir que o bibliotecário/administrador cadastre/atualize/inative um livro.
+### Instalação passo a passo
 
-### Emprestimos
-- O sistema deve permitir que o bibliotecário/admin efetue empréstimos de livros para clientes que não fizeram reserva prévia.
-- O sistema deve permitir que o bibliotecário/administrador efetue empréstimos para clientes com reservas ativas.
+1. **Clone o repositório:**
+   ```bash
+   git clone <https://github.com/Yan-Balbi/api-gestao-biblioteca.git>
+   cd <pasta-do-repositorio>
+   ```
 
-### Jobs
-- O sistema deve ter um job que verifique se há reservas expiradas.
-- O sistema deve ter um job que verifique se há usuários que devem ser inativados/ativados.
-- Os jobs tem que ser executados em chunks pequenos, para evitar estouro ou alto consumo de memória.
+2. **Configure as variaveis de ambiente:**
+   Copie o arquivo de exemplo de .env e atualize os valores.
+   ```bash
+   cp .env.example .env
+   ```
 
-### Complementares
-- Nenhum dado é efetivamente excluido do sistema SGBD, isso vale para qualquer tabela, um item de uma tabela só é marcado como inativo, mas nunca é de fato removido (todas as tabelas precisam ter um campo chamado ativo então).
-- Nesse sistema específico, os CPF e o email não podem ser unique, uma vez que eles podeme estar em uma conta apagada.
+3. **Faça Build e inicie os containeres:**
+   ```bash
+   docker compose up --build
+   ```
 
-## LEVANTAMENTO DE REQUISITOS NÃO FUNCIONAIS
-- O sistema deve fornecer segurança ao garantir autenticação em funções que envolvem exposição ou alteração de dados sensíveis.
-- O sistema deve armazenar as senhas cadastradas pelos usuários usando um método de criptografia de senhas
-   
-## LEVANTAMENTO DE REGRAS DE NEGÓCIO
-| ID    | Regra de Negócio                | Descrição                                                                                                                                              | Condições                                                                                                                   |
-| ----- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| RN01   | Empréstimo de Livro             | Um bibliotecário pode efetuar um empréstimo para um cliente.                                                                                           | Um livro possui 1 ou mais exemplares, sendo que o exemplar deve ser alugado, e não o livro.                                                                  |
-| RN01.1 | Empréstimo com Reserva          | Caso o cliente tenha reservado o livro, o empréstimo é efetuado com sucesso se a posição da reserva do cliente for válida.                             | Número da reserva do cliente < quantidade de reservas disponíveis  **&&** número de reservas > 0 **&&** `dataAtual`-`datareserva` <= `tempoExpiracaoAgendamentoReserva`.                             |
-| RN01.2 | Empréstimo sem Reserva          | Caso o cliente não tenha reservado o livro, mas deseja alugar imediatamente, o empréstimo pode ser efetuado se determinadas condições forem atendidas. | Reservas disponíveis > 0 **e** livros alugados pelo cliente < limite máximo de empréstimos **e** cliente não está suspenso. |
-| RN02   | Reserva de Livro                | Um cliente pode reservar um livro.                                                                                                                     | Livros alugados pelo cliente < limite máximo permitido **e** cliente não está em período de suspensão.                      |
-| RN03   | Atualização da Fila de Reservas | Quando um empréstimo previamente reservado é iniciado, a fila de reservas deve ser atualizada.                                                         | O número de reserva de todos os outros clientes deve ser decrementado.                                                      |
-| RN04   | Expiração de Reserva            | Uma tarefa precisa ser executada constantemente para verificar se existem reservas que não foram concluídas dentro do prazo.                                                      | Se a reserva não for concluida em **X dias** definidos pelo campo `?tempoExpiracaoAgendamento?` em **Regras**, a respectiva reserva deve ter o campo `expirado` marcado como `true`.             |
-| RN05   | Restrição de Role               | Um usuário pode possuir apenas uma role no sistema.                                                                                                    | Role única entre: **CLIENTE**, **BIBLIOTECARIO**, **ADMIN**.                                                                |
-| RN06   | Cadastro de usuários clientes no sistema            | Um cliente só pode criar uma conta se o CPF inserido for **válido** e o CPF e o email não estiverem cadastrados na conta de um outro usuário ativo no BD.                                                                                           | Caso o CPF seja inválido, o sistema deve gerar uma exceção de `CPF inválido`; caso o email já esteja em uso em outra conta ativa (que não foi soft-deletado do sistema), o sistema deve lançar uma exceção de `usuário já cadastrado`; caso o CPF já esteja em uso em outra conta ativa (que não foi soft-deletado do sistema), o sistema deve lançar uma exceção de `CPF já cadastrado`. Após passar por essas 3 verificações, a conta pode ser criada com sucesso. 
-| RN07   | Inserção do primeiro admin      | O sistema deve fazer o cadastro de um usuário de role admin automaticamente no sistema.                                                                                           | Toda vez que o sistema iniciar, ele deve verificar se há algum usuário admin ativo. Se não houver, ele deve criar um usuário com as credenciais padrões de admin e com o CPF '000.000.000-00', email 'admin-email@email.com', senha '#!segredo-admin-gestao-biblio!#' (por que na primeira vez que o sistema for executado o admin precisará logar de alguma forma, e o CPF, email e senha devem ser conhecidos).
-| RN08   | Soft-delete de usuários      | O sistema deve manter o histórico e rastreabilidade dos empréstimos feitos mesmo após a remoção de um usuário.                                                                                           | Quando um usuário for removido, ele precisa ser mantido no banco de dados, para isso, a remoção de um usuário é um update que adiciona um valor ao campo  DATETIME `deleted-at` da tabela de usuários do BD, que por padrão é null. Para que ele possa ser removido, o campo `deleted-at` deve ter o valor nulo, caso ele já tenha uma data vinculada, o sistema deve lançar uma exceção `Usuário já apagado ` ao tentar apagar.
-| RN09   | Suspensão de usuários            | Uma tarefa precisa ser executada constantemente para verificar se existem usuários que não finalizaram o empréstimo dentro do prazo.                                                      | Se o empréstimo não for concluído dentro do prazo estabelecido pelos campos `dataEmprestimo` e `dataDevolucaoPrevista` && tiver a `dataDevolucaoEfetiva` sem nenhum valor && o usuário desse empréstimo não estiver suspenso atualmente, deve ser inserida uma suspensão para o respectivo usuário com `dataInicio` equivalente à data atual e `dataFim` equivalente à `data atual + **X** dias definidos pelo campo tempoDuracaoEmprestimos `.              |
-| RN10   | Relacionamento entre Autor e Pseudônimo            | Todo pseudônimo pode estar vinculado a exatamente 0 ou 1 autor verdadeiro. |
-| RN11   | Cadastro de Autor Verdadeiro            | Para inserir um autor verdadeiro,  todos os dados são obrigatórios, exceto o campo `autorVerdadeiro`. Além disso, o campo `anomimo` deve receber `false`.  
-| RN12   | Cadastro de Autor Pseudonome            | Para inserir um pseudonome de autor, é necessário informar os dados de prenome e sobrenome e/ou sufixo do autor. Os demais campos não são obrigatórios.               
+O backend agora deverá estar rodando em `http://localhost:8080`.
+<!-- 
+---
 
-##2. DESCRICAO DOS CASOS DE USO
+## 🛠️ Docker Configuration Details
 
-##3. ?
+### Available Services
+* **backend**: The main application server.
+* **database**: PostgreSQL/MongoDB instance for data storage.
+* **cache**: Redis instance for session management and caching.
+
+### Useful Commands
+
+* **Stop services:**
+  ```bash
+  docker compose down
+  ```
+* **Stop services and remove volumes (wipes data):**
+  ```bash
+  docker compose down -v
+  ```
+* **View real-time logs:**
+  ```bash
+  docker compose logs -f
+  ```
+* **View logs for a specific service:**
+  ```bash
+  docker compose logs -f backend
+  ```
+* **Execute a command inside the backend container:**
+  ```bash
+  docker compose exec backend <command>
+  ```
+
+---
+
+## 🧪 Running Tests
+
+Run your test suite inside the isolated Docker environment using the following command:
+
+```bash
+docker compose exec backend npm test
+```
+*(Note: Replace `npm test` with your language's test command, e.g., `pytest` or `go test`)*
+
+---
+
+## 📦 Production Deployment
+
+To build a production-ready, minified Docker image, run:
+
+```bash
+docker build --target production -t backend-service:latest .
+```
+
+### Production Best Practices Implemented:
+* **Multi-stage builds:** Keeps the final image size minimal.
+* **Non-root user:** Runs the application securely without root privileges.
+* **Layer caching:** Optimized `Dockerfile` instructions for faster subsequent builds.
+-->
