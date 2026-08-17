@@ -8,9 +8,7 @@ import jakarta.validation.constraints.NotNull;
 public class EditoraInsertDto {
 	@NotBlank(message = "Campo 'nome' é obrigatório")
 	private String nome;
-	@NotBlank(message = "Campo 'descricao' faltando no payload")
 	private String descricao;
-	@NotNull(message = "Campo 'dataCriacao' faltando no payload")
 	private LocalDate dataCriacao;
 	
 	public String getNome() {
